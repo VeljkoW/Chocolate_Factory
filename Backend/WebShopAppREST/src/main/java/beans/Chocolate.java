@@ -2,7 +2,7 @@ package beans;
 
 public class Chocolate {
 	private int id;
-	private int name;
+	private String name;
 	private double price;
 	private String variety;
 	private int factoryId;
@@ -18,10 +18,10 @@ public class Chocolate {
 	public void setId(int id) {
 		this.id = id;
 	}
-	public int getName() {
+	public String getName() {
 		return name;
 	}
-	public void setName(int name) {
+	public void setName(String name) {
 		this.name = name;
 	}
 	public double getPrice() {
@@ -78,7 +78,7 @@ public class Chocolate {
 	public void setStock(int stock) {
 		this.stock = stock;
 	}
-	public Chocolate(int id, int name, double price, String variety, int factoryId, String type, double mass,
+	public Chocolate(int id, String name, double price, String variety, int factoryId, String type, double mass,
 			String description, String imagePath, String status, int stock) {
 		super();
 		this.id = id;
