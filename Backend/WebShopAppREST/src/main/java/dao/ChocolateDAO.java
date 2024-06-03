@@ -22,16 +22,16 @@ public class ChocolateDAO {
 	private String contextpath;
 	
 	public ChocolateDAO(String c) {
-		contextpath=c;
+		///WebShopAppREST/src/main/resources/data/chocolates.json
+		contextpath=c.split(".metadata")[0]+"WebShopAppREST\\src\\main\\resources\\data\\chocolates.json";
 		chocolates=getAll();
 	}
 
 	public List<Chocolate> getAll(){
 		System.out.println(contextpath);
-		
 		try {
 			
-			String json = Reader.readFileAsString(contextpath + "/WEB-INF/classes/data/chocolates.json");
+			String json = Reader.readFileAsString(contextpath);
 		System.out.println(json);
 		Type listType = new TypeToken<List<Chocolate>>(){}.getType();
 		List<Chocolate> retlist = gson.fromJson(json, listType);
@@ -47,7 +47,7 @@ public class ChocolateDAO {
         chocolates.add(chocolate);
         String json = gson.toJson(chocolates);
         
-        try (FileWriter writer = new FileWriter(contextpath + "/WEB-INF/classes/data/chocolates.json")) {
+        try (FileWriter writer = new FileWriter(contextpath)) {
             writer.write(json);
         }
         catch(Exception e){
@@ -97,7 +97,7 @@ public class ChocolateDAO {
     
     public boolean write() {
         String json = gson.toJson(chocolates);
-    	try (FileWriter writer = new FileWriter(contextpath + "/WEB-INF/classes/data/chocolates.json")) {
+    	try (FileWriter writer = new FileWriter(contextpath)) {
             writer.write(json);
         } catch (IOException e) {
             e.printStackTrace();
