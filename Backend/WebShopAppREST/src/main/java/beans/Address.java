@@ -1,5 +1,7 @@
 package beans;
 
+import com.google.gson.Gson;
+
 public class Address {
 	private int id;
 	private String street;
@@ -46,9 +48,5 @@ public class Address {
 	}
 	public Address() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
-	
-	
-	
 }
