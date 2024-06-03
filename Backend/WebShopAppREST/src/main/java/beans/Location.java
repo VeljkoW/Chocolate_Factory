@@ -5,7 +5,6 @@ public class Location {
 	private double latitude; //sirina xd
 	private double longitude;
 	private int addressId;
-	private Address address;
 	
 	public int getId() {
 		return id;
@@ -31,19 +30,12 @@ public class Location {
 	public void setAddressId(int addressId) {
 		this.addressId = addressId;
 	}
-	public Address getAddress() {
-		return address;
-	}
-	public void setAddress(Address address) {
-		this.address = address;
-	}
-	public Location(int id, double latitude, double longitude, Address address) {
+	public Location(int id, double latitude, double longitude, int addressId) {
 		super();
 		this.id = id;
 		this.latitude = latitude;
 		this.longitude = longitude;
-		this.address = address;
-		this.addressId = address.getId();
+		this.addressId = addressId;
 	}
 	public Location() {
 		super();
