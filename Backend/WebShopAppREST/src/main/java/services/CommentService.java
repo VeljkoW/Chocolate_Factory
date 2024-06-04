@@ -13,10 +13,13 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
+import beans.Chocolate;
 import beans.Comment;
+import dao.ChocolateDAO;
 import dao.CommentDAO;
 
 
@@ -39,7 +42,13 @@ public class CommentService {
 		CommentDAO dao =(CommentDAO) ctx.getAttribute("CommentDAO");
 		return dao.getAll();
 	}
-	
+	@GET
+	@Path("/getByFactoryId")
+	@Produces(MediaType.APPLICATION_JSON)
+	public List<Comment> getAllByFactoryId(@QueryParam("factoryId") int factoryId) {
+		CommentDAO dao =(CommentDAO) ctx.getAttribute("CommentDAO");
+		return dao.getAllByFactoryId(factoryId);
+	}
 	@PUT
 	@Path("/")
 	@Produces(MediaType.APPLICATION_JSON)

@@ -5,7 +5,7 @@
     </div>
 
     <div class="factory-cards">
-        <div v-for="factory in factoriesWithDetailsComputed" :key="factory.id" :to="'/factory/' + factory.id" class="factory-card-link" @click="navigateToFactory(factory.id)">
+        <div v-for="factory in factoriesWithDetailsComputed" :key="factory.id" class="factory-card-link" @click="navigateToFactory(factory.id)">
             <FactoryCard  :factory="factory" :address="factory.address" class="factory-card"/>
         </div>
     </div>

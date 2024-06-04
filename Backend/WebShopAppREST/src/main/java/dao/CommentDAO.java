@@ -5,11 +5,13 @@ import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import Utilities.Reader;
+import beans.Chocolate;
 import beans.Comment;
 
 public class CommentDAO {
@@ -23,7 +25,10 @@ public class CommentDAO {
 		contextpath=c.split(".metadata")[0]+"WebShopAppREST\\src\\main\\resources\\data\\comments.json";
 		comments=getAll();
 	}
-
+	public List<Comment> getAllByFactoryId(int id)
+	{
+		return comments.stream().filter(c -> c.getFactoryId() == id).collect(Collectors.toList());
+	}
 	public List<Comment> getAll(){
 		System.out.println(contextpath);
 		try {

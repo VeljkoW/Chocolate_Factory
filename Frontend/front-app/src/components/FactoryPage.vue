@@ -3,6 +3,8 @@
         <div class="top-section">
           <h1>{{ name }}</h1>
           <img :src="logoImagePath" alt="Factory Logo" class="factory-logo" />
+          <button class="add-button" @click="addChocolate">Add Chocolate</button>
+          <button class="back-button" @click="goBack">Go back</button>
         </div>
         <div class="factory-details">
           <h2>Factory Details</h2>
@@ -21,13 +23,22 @@
           <p><strong>Number:</strong> {{ number }}</p>
           <p><strong>Postal Code:</strong> {{ postalCode }}</p>
         </div>
+        <div class="chocolate-cards">
+            <div v-for="chocolate in chocolates" :key="chocolate.id" class="chocolate-card-link" @click="navigateToChocolate(chocolate.id)">
+                <ChocolateCard  :chocolate="chocolate"/>
+            </div>
+        </div>
       </div>
 </template>
 <script>
 import axios from 'axios';
+import ChocolateCard from './ChocolateCard.vue';
 
 export default {
     name: 'FactoryPage',
+    components: {
+        ChocolateCard
+    },
     data()
     {
         return {
@@ -46,6 +57,7 @@ export default {
             number: 0,
             logoImagePath: '',
             grade : 0,
+            chocolates: []
         }
     },
     mounted()
@@ -106,9 +118,30 @@ export default {
                 this.street = response.data.street;
                 this.number = response.data.number;
                 this.postalCode = response.data.postalCode;
+                this.getChocolates();
             }).catch(error => {
                 alert(error.response.data);
             });
+        },
+        getChocolates()
+        {
+            axios.get('http://localhost:8080/WebShopAppREST/rest/chocolate/getByFactoryId?factoryId=' + this.id).then(response => {
+                this.chocolates = response.data;
+            }).catch(error => {
+                alert(error.response.data);
+            });
+        },
+        navigateToChocolate(chocolateId)
+        {
+            this.$router.push("/chocolate/" + chocolateId);
+        },
+        addChocolate()
+        {
+            this.$router.push("/addChocolate/" + this.id);
+        },
+        goBack()
+        {
+            this.$router.push("/");
         }
     }
 }
@@ -142,5 +175,57 @@ export default {
   
   .factory-details p {
     margin: 5px 0;
+  }
+  .chocolate-card-link {
+    text-decoration: none;
+    color: inherit;
+  }
+  .chocolate-cards {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 50px;
+    margin: 50px;
+  }
+  .chocolate-cards .chocolate-card {
+    width: 300px;
+    margin: 10px;
+  }
+  .add-button {
+    background-color: #4caf50;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    cursor: pointer;
+    border: none;
+    border-radius: 4px;
+    position: absolute;
+    top: 20px;
+    right: 20px;
+  }
+  
+  .add-button:hover {
+    background-color: #45a049;
+  }
+  .back-button {
+    background-color: #4caf50;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    cursor: pointer;
+    border: none;
+    border-radius: 4px;
+    position: absolute;
+    top: 20px;
+    left: 20px;
+  }
+  
+  .back-button:hover {
+    background-color: #45a049;
   }
 </style>

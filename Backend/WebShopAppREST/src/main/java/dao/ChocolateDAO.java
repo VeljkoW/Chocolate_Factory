@@ -6,6 +6,7 @@ import java.lang.reflect.Type;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.ws.rs.core.Response;
 
@@ -13,6 +14,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import Utilities.Reader;
+import beans.Address;
 import beans.Chocolate;
 
 public class ChocolateDAO {
@@ -25,6 +27,14 @@ public class ChocolateDAO {
 		///WebShopAppREST/src/main/resources/data/chocolates.json
 		contextpath=c.split(".metadata")[0]+"WebShopAppREST\\src\\main\\resources\\data\\chocolates.json";
 		chocolates=getAll();
+	}
+	public List<Chocolate> getAllByFactoryId(int id)
+	{
+		return chocolates.stream().filter(c -> c.getFactoryId() == id).collect(Collectors.toList());
+	}
+	public Chocolate getById(int id)
+	{
+		return chocolates.stream().filter(t -> t.getId() == id).findFirst().orElse(null);
 	}
 
 	public List<Chocolate> getAll(){

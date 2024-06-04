@@ -14,6 +14,7 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
@@ -39,6 +40,21 @@ public class ChocolateService {
 		ChocolateDAO dao =(ChocolateDAO) ctx.getAttribute("ChocolateDAO");
 		return dao.getAll();
 	}
+	@GET
+	@Path("/getByFactoryId")
+	@Produces(MediaType.APPLICATION_JSON)
+	public List<Chocolate> getAllByFactoryId(@QueryParam("factoryId") int factoryId) {
+		ChocolateDAO dao =(ChocolateDAO) ctx.getAttribute("ChocolateDAO");
+		return dao.getAllByFactoryId(factoryId);
+	}
+	@GET
+	@Path("/getById")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Chocolate getById(@QueryParam("id") int id)
+	{
+		ChocolateDAO dao =(ChocolateDAO) ctx.getAttribute("ChocolateDAO");
+		return dao.getById(id);
+	}
 	
 	@PUT
 	@Path("/")
@@ -47,8 +63,8 @@ public class ChocolateService {
 		ChocolateDAO dao =(ChocolateDAO) ctx.getAttribute("ChocolateDAO");
 		return dao.add(obj);
 	}
-    @PATCH
-    @Path("/")
+    @POST
+    @Path("/update")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     public Chocolate update(Chocolate updatedChocolate) throws IOException {

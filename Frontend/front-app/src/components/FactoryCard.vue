@@ -36,7 +36,7 @@ export default {
     
 }
 
-.card.container {
+.card-container {
     padding: 2px 16px;
     max-width: 400px;
 }
