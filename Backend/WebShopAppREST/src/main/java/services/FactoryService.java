@@ -13,6 +13,7 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
@@ -38,12 +39,20 @@ public class FactoryService {
 		FactoryDAO dao =(FactoryDAO) ctx.getAttribute("FactoryDAO");
 		return dao.getAll();
 	}
+	@GET
+	@Path("/GetById")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Factory getById(@QueryParam("id") int id) {
+		FactoryDAO dao =(FactoryDAO) ctx.getAttribute("FactoryDAO");
+		return dao.GetById(id);
+	}
 	
 	@PUT
 	@Path("/")
 	@Produces(MediaType.APPLICATION_JSON)
 	public boolean save(Factory obj) throws IOException {
 		FactoryDAO dao =(FactoryDAO) ctx.getAttribute("FactoryDAO");
+		System.out.println("aaAA");
 		return dao.add(obj);
 	}
     @PATCH

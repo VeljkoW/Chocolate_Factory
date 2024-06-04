@@ -23,6 +23,10 @@ public class LocationDAO {
 		contextpath=c.split(".metadata")[0]+"WebShopAppREST\\src\\main\\resources\\data\\locations.json";
 		locations=getAll();
 	}
+	public Location getById(int id)
+	{
+		return locations.stream().filter(t -> t.getId() == id).findFirst().orElse(null);
+	}
 
 	public List<Location> getAll(){
 		System.out.println(contextpath);

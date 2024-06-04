@@ -13,10 +13,13 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
+import beans.Factory;
 import beans.Location;
+import dao.FactoryDAO;
 import dao.LocationDAO;
 
 
@@ -38,6 +41,13 @@ public class LocationService {
 	public List<Location> getAll() throws IOException{
 		LocationDAO dao =(LocationDAO) ctx.getAttribute("LocationDAO");
 		return dao.getAll();
+	}
+	@GET
+	@Path("/GetById")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Location getById(@QueryParam("id") int id) {
+		LocationDAO dao =(LocationDAO) ctx.getAttribute("LocationDAO");
+		return dao.getById(id);
 	}
 	
 	@PUT

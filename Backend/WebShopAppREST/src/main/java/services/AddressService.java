@@ -11,11 +11,14 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
 import beans.Address;
+import beans.Location;
 import dao.AddressDAO;
+import dao.LocationDAO;
 
 @Path("/address")
 public class AddressService {
@@ -35,6 +38,13 @@ public class AddressService {
 	public List<Address> getAll() throws IOException{
 		AddressDAO dao =(AddressDAO) ctx.getAttribute("AddressDAO");
 		return dao.getAll();
+	}
+	@GET
+	@Path("/GetById")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Address getById(@QueryParam("id") int id) {
+		AddressDAO dao =(AddressDAO) ctx.getAttribute("AddressDAO");
+		return dao.getById(id);
 	}
 	
 	@PUT

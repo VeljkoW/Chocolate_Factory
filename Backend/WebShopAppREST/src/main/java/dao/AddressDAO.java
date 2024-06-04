@@ -23,6 +23,10 @@ public class AddressDAO {
 		contextpath=a.split(".metadata")[0]+"WebShopAppREST\\src\\main\\resources\\data\\addresses.json";
 		addresses=getAll();
 	}
+	public Address getById(int id)
+	{
+		return addresses.stream().filter(t -> t.getId() == id).findFirst().orElse(null);
+	}
 
 	public List<Address> getAll(){
 		System.out.println(contextpath);

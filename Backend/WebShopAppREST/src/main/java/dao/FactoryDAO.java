@@ -24,7 +24,11 @@ public class FactoryDAO {
 		contextpath=f.split(".metadata")[0]+"WebShopAppREST\\src\\main\\resources\\data\\factories.json";
 		factories=getAll();
 	}
-
+	public Factory GetById(int id)
+	{
+		return factories.stream().filter(t -> t.getId() == id).findFirst().orElse(null);
+	}
+	
 	public List<Factory> getAll(){
 		System.out.println(contextpath);
 		try {
