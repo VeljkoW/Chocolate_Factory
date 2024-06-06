@@ -30,28 +30,37 @@ public class ChocolateDAO {
 	}
 	public List<Chocolate> getAllByFactoryId(int id)
 	{
+		getAll();
 		return chocolates.stream().filter(c -> c.getFactoryId() == id).filter(t->t.getIsDeleted()==false).collect(Collectors.toList());
 	}
 	public Chocolate getById(int id)
 	{
+		getAll();
 		return chocolates.stream().filter(t -> t.getId() == id).findFirst().orElse(null);
 	}
 
 	public List<Chocolate> getAll(){
 		try {
-			
 			String json = Reader.readFileAsString(contextpath);
-		Type listType = new TypeToken<List<Chocolate>>(){}.getType();
-		List<Chocolate> jsondata = gson.fromJson(json, listType);
-		List<Chocolate> retlist=jsondata.stream().filter(t->t.getIsDeleted()==false).collect(Collectors.toList());
-		return retlist;
-		}
+			Type listType = new TypeToken<List<Chocolate>>(){}.getType();
+			List<Chocolate> jsondata = gson.fromJson(json, listType);
+			List<Chocolate> retlist=jsondata.stream().filter(t->t.getIsDeleted()==false).collect(Collectors.toList());
+			return retlist;
+			}
 		catch(Exception e) {
 			e.printStackTrace();
 			return null;
 		}
 	}
     public boolean add(Chocolate chocolate) throws IOException {
+
+    	if(chocolate.getId()<0 || chocolate.getImagePath()==null || chocolate.getName() == null ||
+    	   chocolate.getPrice()<0 || chocolate.getStatus()==null || chocolate.getStock()<0 || 
+    	   chocolate.getVariety()==null || chocolate.getDescription()==null || chocolate.getVariety()==null ||
+    	   chocolate.getFactoryId()<0 || chocolate.getMass()<0 || chocolate.getType().isEmpty()) 
+    	{
+    		return false;    		
+    	}
     	chocolate.setId(chocolate.hashCode());
         chocolates.add(chocolate);
         String json = gson.toJson(chocolates);
@@ -66,6 +75,13 @@ public class ChocolateDAO {
         return true;
     }
     public Chocolate update(Chocolate updatedChocolate){
+    	if(updatedChocolate.getId()<1 || updatedChocolate.getImagePath()==null || updatedChocolate.getName() == null ||
+			updatedChocolate.getPrice()<1 || updatedChocolate.getStatus()==null || updatedChocolate.getStock()<0 || 
+			updatedChocolate.getVariety()==null || updatedChocolate.getDescription()==null || updatedChocolate.getVariety()==null ||
+			updatedChocolate.getFactoryId()<0 || updatedChocolate.getMass()<0 || updatedChocolate.getType().isEmpty()) 
+	    	{	
+	    		return null;    		
+	    	}
         for (int i = 0; i < chocolates.size(); i++) {
             Chocolate chocolate = chocolates.get(i);
             if (chocolate.getId() == updatedChocolate.getId()) {

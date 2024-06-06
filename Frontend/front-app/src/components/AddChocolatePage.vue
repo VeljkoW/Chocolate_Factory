@@ -19,7 +19,7 @@
                         *Price :
                     </td>
                     <td>
-                        <input type="number" v-model="price" id="priceTextbox"/>
+                        <input type="number" min="1" v-model="price" id="priceTextbox"/>
                     </td>
                 </tr>
                 <tr>
@@ -51,7 +51,7 @@
                         *Mass :
                     </td>
                     <td>
-                        <input type="number" v-model="mass" id="massTextbox"/>
+                        <input type="number" min="1" v-model="mass" id="massTextbox"/>
                     </td>
                 </tr>
                 <tr>
@@ -84,10 +84,10 @@ export default {
     {
         return {
             name: '',
-            price: 0,
+            price: 1,
             variety: '',
             type: 'Milk',
-            mass: 0,
+            mass: 1,
             description: '',
             status: 'Unavailable',
             image: '',

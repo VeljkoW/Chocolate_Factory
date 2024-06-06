@@ -4,7 +4,10 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import beans.Chocolate;
 import beans.Factory;
@@ -31,11 +34,15 @@ public class FactoryDAO {
 	
 	public List<Factory> getAll(){
 		try {
-			
-			String json = Reader.readFileAsString(contextpath);
+		String json = Reader.readFileAsString(contextpath);
 		Type listType = new TypeToken<List<Factory>>(){}.getType();
 		List<Factory> retlist = gson.fromJson(json, listType);
-		return retlist;
+		List<Factory> first = retlist.stream().filter(t->t.getStatus().equals("Open")).collect(Collectors.toList());
+		List<Factory> other = retlist.stream().filter(t->!first.contains(t)).collect(Collectors.toList());
+		List<Factory> sorted = new ArrayList<Factory>();
+		sorted.addAll(first);
+		sorted.addAll(other);
+		return sorted;
 		}
 		catch(Exception e) {
 			e.printStackTrace();
@@ -43,8 +50,17 @@ public class FactoryDAO {
 		}
 	}
 	public boolean add(Factory factory) throws IOException {
+		if (factory == null || !isValid(factory)) {
+	        return false;
+	    }
 		factory.setId(factory.hashCode());
         factories.add(factory);
+        
+        if(factory.getGrade()<1 || factory.getLocationId()<0 || factory.getLogoImagePath().isEmpty() ||
+        		factory.getName().isBlank() || factory.getStatus().isBlank() || factory.getClosingTime().isBlank() ||
+        		factory.getOpeningTime().isBlank()) {
+        	return false;
+        }
         String json = gson.toJson(factories);
         
         try (FileWriter writer = new FileWriter(contextpath)) {
@@ -57,6 +73,10 @@ public class FactoryDAO {
         return true;
     }
     public Factory update(Factory updatedFactory){
+        if (updatedFactory == null || !isValid(updatedFactory)) {
+            return null;
+        }
+        
         for (int i = 0; i < factories.size(); i++) {
         	Factory factory = factories.get(i);
             if (factory.getId() == updatedFactory.getId()) {
@@ -74,6 +94,15 @@ public class FactoryDAO {
         }
         return null;
     }
+    private boolean isValid(Factory factory) {
+        if (factory.getName() == null || factory.getOpeningTime() == null ||
+            factory.getClosingTime() == null || factory.getStatus() == null ||
+            factory.getLocationId() <= 0 || factory.getLogoImagePath() == null ||
+            factory.getGrade() <= 0 || factory.getGrade() < 1) {
+            return false;
+        }
+        return true;
+    }
     public boolean delete(int id) {
     	Factory f = factories.stream().filter(t->t.getId()==id).findFirst().orElse(null);
     	if(f==null) {
@@ -81,7 +110,6 @@ public class FactoryDAO {
     	}
     	factories.remove(f);
     	
-
     	if(write()) {
     		return true;
     	}
