@@ -5,7 +5,7 @@ public class Comment {
 	private int userId;
 	private int factoryId;
 	private String comment;
-	private int grade;
+	private int grade;	
 	
 	public int getId() {
 		return id;

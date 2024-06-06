@@ -30,7 +30,7 @@ public class ChocolateDAO {
 	}
 	public List<Chocolate> getAllByFactoryId(int id)
 	{
-		return chocolates.stream().filter(c -> c.getFactoryId() == id).collect(Collectors.toList());
+		return chocolates.stream().filter(c -> c.getFactoryId() == id).filter(t->t.getIsDeleted()==false).collect(Collectors.toList());
 	}
 	public Chocolate getById(int id)
 	{
@@ -38,13 +38,12 @@ public class ChocolateDAO {
 	}
 
 	public List<Chocolate> getAll(){
-		System.out.println(contextpath);
 		try {
 			
 			String json = Reader.readFileAsString(contextpath);
-		System.out.println(json);
 		Type listType = new TypeToken<List<Chocolate>>(){}.getType();
-		List<Chocolate> retlist = gson.fromJson(json, listType);
+		List<Chocolate> jsondata = gson.fromJson(json, listType);
+		List<Chocolate> retlist=jsondata.stream().filter(t->t.getIsDeleted()==false).collect(Collectors.toList());
 		return retlist;
 		}
 		catch(Exception e) {
@@ -67,8 +66,6 @@ public class ChocolateDAO {
         return true;
     }
     public Chocolate update(Chocolate updatedChocolate){
-    	System.out.println(updatedChocolate.getId());
-    	System.out.println(chocolates.size());
         for (int i = 0; i < chocolates.size(); i++) {
             Chocolate chocolate = chocolates.get(i);
             if (chocolate.getId() == updatedChocolate.getId()) {
@@ -82,6 +79,7 @@ public class ChocolateDAO {
                 chocolate.setImagePath(updatedChocolate.getImagePath());
                 chocolate.setStatus(updatedChocolate.getStatus());
                 chocolate.setStock(updatedChocolate.getStock());
+                chocolate.setIsDeleted(updatedChocolate.getIsDeleted());
                 chocolates.set(i, chocolate);
                 if(write())
                 	return chocolate;
@@ -94,9 +92,8 @@ public class ChocolateDAO {
     	if(c==null) {
     		return false;
     	}
-    	chocolates.remove(c);
-    	
-
+    	c.setIsDeleted(true);
+    	update(c);
     	if(write()) {
     		return true;
     	}

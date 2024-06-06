@@ -92,6 +92,7 @@ export default {
             status: 'Unavailable',
             image: '',
             factoryId: 0,
+            isDeleted: false,
         }
     },
     methods:
@@ -185,6 +186,7 @@ export default {
                 imagePath: this.image,
                 status: this.status,
                 stock: 0,
+                isDeleted: false,
             }).then(response => {
                 this.$router.push("/factory/" + this.factoryId);
             }).catch(error => {

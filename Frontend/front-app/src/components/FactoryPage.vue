@@ -28,6 +28,20 @@
                 <ChocolateCard  :chocolate="chocolate"/>
             </div>
         </div>
+        <div>
+          <div class="container mt-4">
+            <div class="row justify-content-center">
+              <div v-for="comment in comments" :key="comment.id" class="col-md-6 col-lg-4 mb-3">
+                  <div class="card">
+                    <div class="card-body">
+                      <h5 class="card-title">Grade: {{ comment.grade }}</h5>
+                      <p class="card-text">{{ comment.comment }}</p>
+                    </div>
+                  </div>
+              </div>
+            </div>
+        </div>
+        </div>
       </div>
 </template>
 <script>
@@ -57,7 +71,8 @@ export default {
             number: 0,
             logoImagePath: '',
             grade : 0,
-            chocolates: []
+            chocolates: [],
+            comments: []
         }
     },
     mounted()
@@ -127,9 +142,25 @@ export default {
         {
             axios.get('http://localhost:8080/WebShopAppREST/rest/chocolate/getByFactoryId?factoryId=' + this.id).then(response => {
                 this.chocolates = response.data;
+                this.getComments();
             }).catch(error => {
                 alert(error.response.data);
             });
+        },
+        getComments()
+        {
+            let id = this.$route.params.id;
+            if(id == null)
+            {
+                alert('factory not found');
+                return;
+            }
+            axios.get('http://localhost:8080/WebShopAppREST/rest/comment/getByFactoryId?factoryId=' + id).then(response => {
+                  this.comments=response.data;
+                  console.log(this.comments);
+              }).catch(error => {
+                  alert(error.response.data);
+              });
         },
         navigateToChocolate(chocolateId)
         {

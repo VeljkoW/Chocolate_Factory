@@ -80,6 +80,7 @@
             </tr>
         </table>
         <button @click="EditChocolate">Edit Chocolate</button>
+        <button @click="DeleteChocolate">Delete Chocolate</button>
     </div>
 </div>
 </template>
@@ -141,6 +142,24 @@ export default {
                 return;
             }
             this.$router.push("/editChocolate/" + chocolateId);
+        }, 
+        DeleteChocolate()
+        {
+            let chocolateId = this.$route.params.id;
+            console.log('http://localhost:8080/WebShopAppREST/rest/chocolate/' + chocolateId);
+            if(chocolateId == null)
+            {
+                alert('Chocolate not found');
+                return;
+            }
+            axios.delete('http://localhost:8080/WebShopAppREST/rest/chocolate/' + chocolateId)
+                .then(response => {
+                    alert('Chocolate deleted successfully');
+                    this.goBack();
+                })
+                .catch(error => {
+                    alert('Error deleting chocolate: ');
+                });
         },
         goBack()
         {

@@ -1,1 +1,37 @@
-[]
+[    
+    {
+        "id": 1,
+        "userId": 101,
+        "factoryId": 976151595,
+        "comment": "Excellent factory with high-quality products!",
+        "grade": 5
+    },
+    {
+        "id": 2,
+        "userId": 102,
+        "factoryId": 976151595,
+        "comment": "Good experience, but delivery could be faster.",
+        "grade": 4
+    },
+    {
+        "id": 3,
+        "userId": 103,
+        "factoryId": 976151595,
+        "comment": "Satisfactory service but the packaging needs improvement.",
+        "grade": 3
+    },
+    {
+        "id": 4,
+        "userId": 104,
+        "factoryId": 976151595,
+        "comment": "Not satisfied with the product quality.",
+        "grade": 2
+    },
+    {
+        "id": 5,
+        "userId": 105,
+        "factoryId": 976151595,
+        "comment": "Terrible experience. The product was defective.",
+        "grade": 1
+    }
+]

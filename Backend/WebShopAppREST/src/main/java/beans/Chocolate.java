@@ -12,6 +12,14 @@ public class Chocolate {
 	private String imagePath;	//this needs to change aaaaaaaaaaaaaaaa
 	private String status;
 	private int stock;
+	private boolean IsDeleted;
+	
+	public boolean getIsDeleted() {
+		return IsDeleted;
+	}
+	public void setIsDeleted(boolean isDeleted) {
+		IsDeleted = isDeleted;
+	}
 	public int getId() {
 		return id;
 	}
@@ -79,7 +87,7 @@ public class Chocolate {
 		this.stock = stock;
 	}
 	public Chocolate(int id, String name, double price, String variety, int factoryId, String type, double mass,
-			String description, String imagePath, String status, int stock) {
+			String description, String imagePath, String status, int stock,boolean isDeleted) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -92,6 +100,7 @@ public class Chocolate {
 		this.imagePath = imagePath;
 		this.status = status;
 		this.stock = stock;
+		this.IsDeleted=isDeleted;
 	}
 	public Chocolate() {
 		super();

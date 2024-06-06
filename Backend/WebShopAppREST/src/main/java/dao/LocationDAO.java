@@ -29,11 +29,9 @@ public class LocationDAO {
 	}
 
 	public List<Location> getAll(){
-		System.out.println(contextpath);
 		try {
 			
 			String json = Reader.readFileAsString(contextpath);
-		System.out.println(json);
 		Type listType = new TypeToken<List<Location>>(){}.getType();
 		List<Location> retlist = gson.fromJson(json, listType);
 		return retlist;

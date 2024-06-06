@@ -30,11 +30,9 @@ public class FactoryDAO {
 	}
 	
 	public List<Factory> getAll(){
-		System.out.println(contextpath);
 		try {
 			
 			String json = Reader.readFileAsString(contextpath);
-		System.out.println(json);
 		Type listType = new TypeToken<List<Factory>>(){}.getType();
 		List<Factory> retlist = gson.fromJson(json, listType);
 		return retlist;

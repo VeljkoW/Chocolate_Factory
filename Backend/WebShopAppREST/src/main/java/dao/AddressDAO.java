@@ -19,7 +19,6 @@ public class AddressDAO {
 	private String contextpath;
 	
 	public AddressDAO(String a) {
-		///WebShopAppREST/src/main/resources/data/addresses.json
 		contextpath=a.split(".metadata")[0]+"WebShopAppREST\\src\\main\\resources\\data\\addresses.json";
 		addresses=getAll();
 	}
@@ -29,11 +28,9 @@ public class AddressDAO {
 	}
 
 	public List<Address> getAll(){
-		System.out.println(contextpath);
 		try {
 			
 			String json = Reader.readFileAsString(contextpath);
-		System.out.println(json);
 		Type listType = new TypeToken<List<Address>>(){}.getType();
 		List<Address> retlist = gson.fromJson(json, listType);
 		return retlist;
