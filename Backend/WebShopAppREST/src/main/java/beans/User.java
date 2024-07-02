@@ -13,12 +13,9 @@ public class User {
 	private LocalDate dateOfBirth;
 	private String uloga;
 	private List<Purchase> purchases;
-	private Cart cart;
 	private int cartId;
-	private Factory factory;
 	private int factoryId;
 	private int points;
-	private UserType userType;
 	private int userTypeId;
 	
 	public User() {
@@ -28,8 +25,8 @@ public class User {
 	
 	
 	public User(int id, String username, String password, String name, String surname, String gender,
-			LocalDate dateOfBirth, String uloga, List<Purchase> purchases, Cart cart, Factory factory, int points,
-			UserType userType) {
+			LocalDate dateOfBirth, String uloga, List<Purchase> purchases, int cartId, int factoryId, int points,
+			int userId) {
 		super();
 		this.id = id;
 		this.username = username;
@@ -40,13 +37,10 @@ public class User {
 		this.dateOfBirth = dateOfBirth;
 		this.uloga = uloga;
 		this.purchases = purchases;
-		this.cart = cart;
-		this.factory = factory;
 		this.points = points;
-		this.userType = userType;
-		this.factoryId = factory.getId();	//needs to change probably
-		this.cartId = cart.getId();			
-		this.userTypeId = cart.getId();
+		this.userTypeId = userId;
+		this.factoryId = factoryId;	//needs to change probably
+		this.cartId = cartId;
 	}
 
 
@@ -56,23 +50,11 @@ public class User {
 	public void setPurchases(List<Purchase> purchases) {
 		this.purchases = purchases;
 	}
-	public Cart getCart() {
-		return cart;
-	}
-	public void setCart(Cart cart) {
-		this.cart = cart;
-	}
 	public int getCartId() {
 		return cartId;
 	}
 	public void setCartId(int cartId) {
 		this.cartId = cartId;
-	}
-	public Factory getFactory() {
-		return factory;
-	}
-	public void setFactory(Factory factory) {
-		this.factory = factory;
 	}
 	public int getFactoryId() {
 		return factoryId;
@@ -85,12 +67,6 @@ public class User {
 	}
 	public void setPoints(int points) {
 		this.points = points;
-	}
-	public UserType getUserType() {
-		return userType;
-	}
-	public void setUserType(UserType userType) {
-		this.userType = userType;
 	}
 	public int getUserTypeId() {
 		return userTypeId;
