@@ -4,7 +4,7 @@
         <h1>Chocolate</h1>
         <button class="back-button" @click="goBack">Go back</button>
     </div>
-    <div class="table-container">
+    <div class="table-container-chocolatepage">
         <table>
             <tr>
                 <td>
@@ -176,4 +176,13 @@ export default {
   color: white;
   text-align: center;
 }
+
+.table-container-chocolatepage {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: calc(100vh - 40px - 40px);
+    margin-top: -80px;
+  }
 </style>

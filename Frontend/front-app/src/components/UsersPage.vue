@@ -13,8 +13,21 @@
           <option value="Manager">Manager</option>
           <option value="Administrator">Administrator</option>
         </select>
+        <div class="filter-reset-buttons">
         <button class="filter-button" @click="filterUsers">Filter</button>
         <button class="reset-button" @click="resetFilter">Reset</button>
+      </div>
+      </div>
+    </div>
+    <div class="filter-sectionTypes">
+      <div class="filter-controlsTypes">
+        <select v-model="selectedType" class="filter-selectTypes">
+          <option value="">All Types</option>
+          <option value="None">None</option>
+          <option value="Bronze">Bronze</option>
+          <option value="Silver">Silver</option>
+          <option value="Gold">Gold</option>
+        </select>
       </div>
     </div>
     <div class="search-section">
@@ -43,6 +56,7 @@
             <th @click="sortUsers('dateOfBirth')">Date of Birth</th>
             <th @click="sortUsers('uloga')">Role</th>
             <th @click="sortUsers('points')">Points</th>
+            <th @click="sortUsers('type')">Type</th>
           </tr>
         </thead>
         <tbody>
@@ -54,6 +68,7 @@
             <td>{{ user.dateOfBirth }}</td>
             <td>{{ user.uloga }}</td>
             <td>{{ user.points}}</td>
+            <td>{{ getUserTypeName(user.userTypeId) }}</td>
           </tr>
         </tbody>
       </table>
@@ -69,19 +84,22 @@ export default {
     return {
       users: [],
       selectedRole: '',
+      selectedType: '',
       searchUsername: '',
       searchName: '',
       searchSurname: '',
       filteredUsers: [],
       sortKey: '',
-      sortOrder: 1
+      sortOrder: 1,
+      usertypes: []
     };
   },
   created() {
-    this.fetchUsers();
+    this.getUsers();
+    this.getUserTypes();
   },
   methods: {
-    async fetchUsers() {
+    async getUsers() {
       try {
         const response = await axios.get('http://localhost:8080/WebShopAppREST/rest/user/all');
         this.users = response.data;
@@ -94,14 +112,16 @@ export default {
     filterUsers() {
       this.filteredUsers = this.users.filter(user => {
         const matchesRole = this.selectedRole === '' || user.uloga === this.selectedRole;
+        const matchesType = this.selectedType === '' || this.getUserTypeName(user.userTypeId) === this.selectedType;
         const matchesUsername = this.searchUsername === '' || user.username.toLowerCase().includes(this.searchUsername.toLowerCase());
         const matchesName = this.searchName === '' || user.name.toLowerCase().includes(this.searchName.toLowerCase());
         const matchesSurname = this.searchSurname === '' || user.surname.toLowerCase().includes(this.searchSurname.toLowerCase());
-        return matchesRole && matchesUsername && matchesName && matchesSurname;
+        return matchesRole && matchesUsername && matchesName && matchesSurname && matchesType;
       });
     },
     resetFilter() {
       this.selectedRole = '';
+      this.selectedType = '';
       this.searchUsername = '';
       this.searchName = '';
       this.searchSurname = '';
@@ -124,6 +144,16 @@ export default {
         if (aValue > bValue) return 1 * this.sortOrder;
         return 0;
       });
+    },
+    getUserTypes()
+    {
+      axios.get('http://localhost:8080/WebShopAppREST/rest/usertype/getall').then(response => this.usertypes = response.data).catch(error => {
+                alert('Error fetching usertypes')
+            });
+    },
+    getUserTypeName(userTypeId) {
+      const userType = this.usertypes.find(u => u.id === userTypeId);
+      return userType ? userType.name : 'Unknown';
     }
   }
 };
@@ -159,7 +189,29 @@ export default {
 .filter-select {
     width: 630px;
 }
+.filter-sectionTypes {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+  margin-right: 135px;
+}
 
+.filter-controlsTypes {
+  display: flex;
+  align-items: center;
+}
+
+.filter-selectTypes{
+  margin: 0 5px;
+  padding: 10px;
+  font-size: 16px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+}
+.filter-selectTypes {
+    width: 630px;
+}
 .filter-button {
   background-color: #4caf50;
   color: white;

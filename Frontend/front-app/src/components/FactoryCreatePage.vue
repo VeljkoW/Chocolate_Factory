@@ -4,7 +4,7 @@
             <h1>Create a New Factory</h1>
             <button class="back-button" @click="goBack">Go back</button>
         </div>
-        <div class="table-container">
+        <div class="table-container-factorycreate">
             <table>
                 <tr>
                     <td>*Factory Name :</td>
@@ -59,7 +59,7 @@
                     </td>
                 </tr>
             </table>
-            <button @click="createAddress">Create Factory</button>
+            <button @click="createAddress" class="create-button">Create Factory</button>
         </div>
     </div>
 </template>
@@ -285,12 +285,12 @@ export default {
     background-color: red;
 }
 
-.table-container {
+.table-container-factorycreate {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    margin-top: 100px;
+    margin-top: 50px;
 }
 
 table {
@@ -348,5 +348,8 @@ button {
 
 button:hover {
     background-color: #45a049;
+}
+.create-button {
+    margin-bottom: 50px
 }
 </style>

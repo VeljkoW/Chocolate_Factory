@@ -4,7 +4,7 @@
             <h1>Add chocolate to factory</h1>
             <button class="back-button" @click="goBack">Go back</button>
         </div>
-        <div class="table-container">
+        <div class="table-container-chocolate">
             <table>
                 <tr>
                     <td>
@@ -219,13 +219,13 @@ export default {
   background-color: red;
 }
 
-.table-container {
+.table-container-chocolate {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     height: calc(100vh - 40px - 40px);
-    margin-top: -40px;
+    margin-top: -50px;
   }
 
 table {

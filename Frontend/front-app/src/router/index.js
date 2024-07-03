@@ -9,6 +9,8 @@ import RegisterView from '../views/RegisterView.vue';
 import FactoryCreateView from '../views/FactoryCreateView.vue';
 import EmployeeCreationView from '../views/EmployeeCreationView.vue';
 import UsersView from '../views/UsersView.vue';
+import UserProfileView from '../views/UserProfileView.vue';
+import EditUserProfileView from '../views/EditUserProfileView.vue';
 
 const routes = [
   {
@@ -60,6 +62,16 @@ const routes = [
     path: "/users",
     name: "UsersView",
     component: UsersView
+  },
+  {
+    path: "/userprofile/:id",
+    name: "UserProfileView",
+    component: UserProfileView
+  },
+  {
+    path: "/edituserprofile/:id",
+    name: "EditUserProfileView",
+    component: EditUserProfileView
   }
 ];
 

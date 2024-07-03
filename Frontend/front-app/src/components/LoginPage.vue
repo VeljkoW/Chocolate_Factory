@@ -1,6 +1,6 @@
 <template>
     <div class="top-section">
-        Login
+        <h1>Login</h1>
         <button class="back-button" @click="goBack">Go back</button>
     </div>
     <div class="table-container-login">

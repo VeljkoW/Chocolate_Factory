@@ -50,18 +50,17 @@ public class UserDAO {
 			{
 				user.setFactoryId(factoryId);
 			}
-			if(update(user) != null)
+			if(updateFactoryId(user) != null)
 				return true;
 		}
 		return false;
 	}
-	public User update(User updatedUser)
+	public User updateFactoryId(User updatedUser)
 	{
 		 for (int i = 0; i < users.size(); i++) {
 	            User user = users.get(i);
 	            if (user.getId() == updatedUser.getId()) {
 	            	user.setUsername(updatedUser.getUsername());
-	            	user.setPassword(updatedUser.getPassword());
 	            	user.setName(updatedUser.getName());
 	            	user.setSurname(updatedUser.getSurname());
 	            	user.setGender(updatedUser.getGender());
@@ -77,7 +76,37 @@ public class UserDAO {
 	        }
 	        return null;
 	}
-	
+	public User update(User updatedUser)
+	{
+		 for (int i = 0; i < users.size(); i++) {
+	            User user = users.get(i);
+	            if (user.getId() == updatedUser.getId()) {
+	            	user.setUsername(updatedUser.getUsername());
+	            	user.setName(updatedUser.getName());
+	            	user.setSurname(updatedUser.getSurname());
+	            	user.setGender(updatedUser.getGender());
+	            	user.setDateOfBirth(updatedUser.getDateOfBirth());
+	            	users.set(i, user);
+	                if(write())
+	                	return user;
+	            }
+	        }
+	        return null;
+	}
+
+	public User updatePassword(User updatedUser)
+	{
+		 for (int i = 0; i < users.size(); i++) {
+	            User user = users.get(i);
+	            if (user.getId() == updatedUser.getId()) {
+	            	user.setPassword(updatedUser.getPassword());
+	            	users.set(i, user);
+	                if(write())
+	                	return user;
+	            }
+	        }
+	        return null;
+	}
 	public User authenticatePassword(String username, String password)
 	{
 		User user = getByUserName(username);

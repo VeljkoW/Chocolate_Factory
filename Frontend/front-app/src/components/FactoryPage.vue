@@ -194,7 +194,7 @@ export default {
   
   .factory-logo {
     max-width: 100%;
-    height: auto;
+    height: 300px;
     margin-top: 20px;
   }
   

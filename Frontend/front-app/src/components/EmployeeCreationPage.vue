@@ -1,6 +1,6 @@
 <template>
     <div class="top-section">
-      Add an Employee
+      <h1>Add an Employee</h1>
       <button class="back-button" @click="goBack">Go back</button>
     </div>
     <div class="table-container1">
@@ -133,7 +133,7 @@
             uloga: this.role,
             factoryId: this.factoryId,
             points: 0,
-            userTypeId: -1
+            userTypeId: 1
           });
           if (response.status === 200) {
             alert('Registration successful!');

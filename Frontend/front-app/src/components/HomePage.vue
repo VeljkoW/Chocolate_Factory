@@ -1,7 +1,8 @@
 <template>
 <div>
     <div class="top-section">
-        <button class="usersview-button" @click="navigateToUsers">view all users</button>
+        <button class="profile-button" @click="navigateToProfile">My profile</button>
+        <button class="usersview-button" @click="navigateToUsers">View all users</button>
         <button class="createfactory-button" @click="navigateToCreateFactory">Create Factory</button>
         <button class="login-button" @click="navigateToLogin">Log in</button>
         
@@ -84,6 +85,10 @@ export default {
         navigateToUsers()
         {
             this.$router.push("/users");
+        },
+        navigateToProfile()
+        {
+            this.$router.push("/userprofile/" + "2") //change into logged user id when it is implemented
         }
     },
     computed: {
@@ -112,6 +117,21 @@ body {
     margin: 0;
 }
 
+.profile-button {
+    background-color: #4caf50;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    cursor: pointer;
+    border: none;
+    border-radius: 4px;
+    position: absolute;
+    top: -2px;
+    right: 580px;
+  }
 .login-button {
     background-color: #4caf50;
     color: white;
@@ -140,7 +160,7 @@ body {
       border-radius: 4px;
       position: absolute;
       top: -2px;
-      right: 380px;
+      right: 375px;
     }
   
 .createfactory-button {
@@ -156,7 +176,7 @@ body {
     border-radius: 4px;
     position: absolute;
     top: -2px;
-    right: 170px;
+    right: 165px;
   }
 .top-section {
     background-color: #1e2952;

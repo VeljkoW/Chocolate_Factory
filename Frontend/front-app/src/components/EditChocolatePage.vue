@@ -4,7 +4,7 @@
             <h1>Chocolate</h1>
             <button class="back-button" @click="goBack">Go back</button>
         </div>
-        <div class="table-container">
+        <div class="table-container-chocolateedit">
             <table>
                 <tr>
                     <td>
@@ -272,3 +272,13 @@ export default {
 }
 
 </script>
+<style>
+
+.table-container-chocolateedit {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: calc(100vh - 40px - 40px);
+  }
+</style>

@@ -95,6 +95,36 @@ public class UserService {
 		UserDAO dao = (UserDAO) ctx.getAttribute("UserDAO");
 		return dao.updateManager(managerId, factoryId);
 	}
+	@PUT
+	@Path("/updateWithoutPassword")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response updateWithoutPassword(User user)
+	{
+		UserDAO dao = (UserDAO) ctx.getAttribute("UserDAO");
+		
+		if(dao.getByUserName(user.getUsername()) != null && !dao.getById(user.getId()).getUsername().equals(user.getUsername()))
+		{
+			return Response.status(Response.Status.UNAUTHORIZED).entity("Username already exists").build();
+		}
+		if(dao.update(user) != null)
+		{
+			return Response.ok().build();
+		}
+		return Response.status(Response.Status.UNAUTHORIZED).entity("Unexpected error").build();
+	}
+	@PUT
+	@Path("/updatePassword")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response updatePassword(User user)
+	{
+		UserDAO dao = (UserDAO) ctx.getAttribute("UserDAO");
+		if(dao.updatePassword(user) != null)
+		{
+			return Response.ok().build();
+		}
+		return Response.status(Response.Status.UNAUTHORIZED).entity("Unexpected error").build();
+	}
+	
 	@GET
 	@Path("/filterByRole")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -123,5 +153,13 @@ public class UserService {
 			return Response.ok().build();
 		}
 		return Response.status(Response.Status.UNAUTHORIZED).entity("Username already exists").build();
+	}
+	@GET
+	@Path("/getById")
+	@Produces(MediaType.APPLICATION_JSON)
+	public User getbyId(@QueryParam("id") int id)
+	{
+		UserDAO dao =(UserDAO) ctx.getAttribute("UserDAO");
+		return dao.getById(id);
 	}
 }
