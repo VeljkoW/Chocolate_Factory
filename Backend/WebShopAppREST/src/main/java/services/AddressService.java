@@ -50,9 +50,9 @@ public class AddressService {
 	@PUT
 	@Path("/")
 	@Produces(MediaType.APPLICATION_JSON)
-	public boolean save(Address obj) throws IOException {
+	public int save(Address obj) throws IOException {
 		AddressDAO dao =(AddressDAO) ctx.getAttribute("AddressDAO");
-		return dao.add(obj);
+		return dao.add(obj); //gets back address id 
 	}
     @DELETE
     @Path("/{id}")

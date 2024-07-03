@@ -50,9 +50,8 @@ public class FactoryService {
 	@PUT
 	@Path("/")
 	@Produces(MediaType.APPLICATION_JSON)
-	public boolean save(Factory obj) throws IOException {
+	public int save(Factory obj) throws IOException {
 		FactoryDAO dao =(FactoryDAO) ctx.getAttribute("FactoryDAO");
-		System.out.println("aaAA");
 		return dao.add(obj);
 	}
     @PATCH

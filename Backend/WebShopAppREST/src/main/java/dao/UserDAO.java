@@ -5,11 +5,13 @@ import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import Utilities.Reader;
+import beans.Chocolate;
 import beans.User;
 
 public class UserDAO {
@@ -25,24 +27,112 @@ public class UserDAO {
 	}
 	public User getById(int id)
 	{
+		if(users == null)
+		{
+			return null;
+		}
 		return users.stream().filter(t -> t.getId() == id).findFirst().orElse(null);
 	}
-
+	public User getByUserName(String Username)
+	{
+		if(users == null)
+		{
+			return null;
+		}
+		return users.stream().filter(t -> t.getUsername().equals(Username)).findFirst().orElse(null);
+	}
+	public boolean updateManager(int userId,int factoryId)
+	{
+		User user = getById(userId);
+		if(user != null)
+		{
+			if(user.getFactoryId() == -1 || user.getFactoryId() != factoryId)
+			{
+				user.setFactoryId(factoryId);
+			}
+			if(update(user) != null)
+				return true;
+		}
+		return false;
+	}
+	public User update(User updatedUser)
+	{
+		 for (int i = 0; i < users.size(); i++) {
+	            User user = users.get(i);
+	            if (user.getId() == updatedUser.getId()) {
+	            	user.setUsername(updatedUser.getUsername());
+	            	user.setPassword(updatedUser.getPassword());
+	            	user.setName(updatedUser.getName());
+	            	user.setSurname(updatedUser.getSurname());
+	            	user.setGender(updatedUser.getGender());
+	            	user.setDateOfBirth(updatedUser.getDateOfBirth());
+	            	user.setUloga(updatedUser.getUloga());
+	            	user.setFactoryId(updatedUser.getFactoryId());
+	            	user.setPoints(updatedUser.getPoints());
+	            	user.setUserTypeId(updatedUser.getUserTypeId());
+	            	users.set(i, user);
+	                if(write())
+	                	return user;
+	            }
+	        }
+	        return null;
+	}
+	
+	public User authenticatePassword(String username, String password)
+	{
+		User user = getByUserName(username);
+		if(user.getPassword().equals(password))
+		{
+			return user;
+		}
+		return null;
+	}
+	
 	public List<User> getAll(){
 		try {
-			
+		//System.out.println(contextpath);
 		String json = Reader.readFileAsString(contextpath);
+		//System.out.println(json);
 		Type listType = new TypeToken<List<User>>(){}.getType();
-		List<User> retlist = gson.fromJson(json, listType);
+		List<User> jsondata = gson.fromJson(json, listType);
+		List<User> retlist = jsondata.stream().collect(Collectors.toList());
+		//System.out.println(retlist.size());
+		//System.out.println(retlist);
 		return retlist;
 		}
 		catch(Exception e) {
+			//System.out.println("catch");
 			e.printStackTrace();
 			return null;
 		}
 	}
-    public boolean add(User user) throws IOException {
+	public List<User> getAllByRole(String role)
+	{
+		if(role.equals("Administrator"))
+		{
+			return users.stream().filter(t -> t.getUloga().equals("Administrator")).collect(Collectors.toList());
+		}
+		if(role.equals("Customer"))
+		{
+			return users.stream().filter(t -> t.getUloga().equals("Customer")).collect(Collectors.toList());
+		}
+		if(role.equals("Manager"))
+		{
+			return users.stream().filter(t -> t.getUloga().equals("Manager")).collect(Collectors.toList());
+		}
+		return users.stream().filter(t -> t.getUloga().equals("Employee")).collect(Collectors.toList());
+	}
+	public List<User> getFreeManagers(){
+		return users.stream().filter(t -> t.getUloga().equals("Manager") && t.getFactoryId() == -1).collect(Collectors.toList());
+	}
+	
+	
+    public int add(User user) throws IOException {
     	user.setId(user.hashCode());
+    	if(getByUserName(user.getUsername()) != null)
+    	{
+    		return -1;
+    	}
     	users.add(user);
         String json = gson.toJson(users);
         
@@ -51,11 +141,10 @@ public class UserDAO {
         }
         catch(Exception e){
         	e.printStackTrace();
-        	return false;
+        	return -1;
         }
-        return true;
+        return user.getId();
     }
-
     public boolean delete(int id) {
     	User u = users.stream().filter(t->t.getId()==id).findFirst().orElse(null);
     	if(u==null) {

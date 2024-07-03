@@ -53,7 +53,7 @@ public class LocationService {
 	@PUT
 	@Path("/")
 	@Produces(MediaType.APPLICATION_JSON)
-	public boolean save(Location obj) throws IOException {
+	public int save(Location obj) throws IOException {
 		LocationDAO dao =(LocationDAO) ctx.getAttribute("LocationDAO");
 		return dao.add(obj);
 	}

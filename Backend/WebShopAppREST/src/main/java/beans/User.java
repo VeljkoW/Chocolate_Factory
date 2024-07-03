@@ -10,10 +10,10 @@ public class User {
 	private String name;
 	private String surname;
 	private String gender;
-	private LocalDate dateOfBirth;
+	private String dateOfBirth;
 	private String uloga;
-	private List<Purchase> purchases;
-	private int cartId;
+	//private List<Purchase> purchases;
+	//private int cartId;
 	private int factoryId;
 	private int points;
 	private int userTypeId;
@@ -25,7 +25,7 @@ public class User {
 	
 	
 	public User(int id, String username, String password, String name, String surname, String gender,
-			LocalDate dateOfBirth, String uloga, List<Purchase> purchases, int cartId, int factoryId, int points,
+			String dateOfBirth, String uloga, int factoryId, int points,
 			int userId) {
 		super();
 		this.id = id;
@@ -36,25 +36,11 @@ public class User {
 		this.gender = gender;
 		this.dateOfBirth = dateOfBirth;
 		this.uloga = uloga;
-		this.purchases = purchases;
+		//this.purchases = purchases;
 		this.points = points;
 		this.userTypeId = userId;
 		this.factoryId = factoryId;	//needs to change probably
-		this.cartId = cartId;
-	}
-
-
-	public List<Purchase> getPurchases() {
-		return purchases;
-	}
-	public void setPurchases(List<Purchase> purchases) {
-		this.purchases = purchases;
-	}
-	public int getCartId() {
-		return cartId;
-	}
-	public void setCartId(int cartId) {
-		this.cartId = cartId;
+		//this.cartId = cartId;
 	}
 	public int getFactoryId() {
 		return factoryId;
@@ -110,10 +96,10 @@ public class User {
 	public void setGender(String gender) {
 		this.gender = gender;
 	}
-	public LocalDate getDateOfBirth() {
+	public String getDateOfBirth() {
 		return dateOfBirth;
 	}
-	public void setDateOfBirth(LocalDate dateOfBirth) {
+	public void setDateOfBirth(String dateOfBirth) {
 		this.dateOfBirth = dateOfBirth;
 	}
 	public String getUloga() {

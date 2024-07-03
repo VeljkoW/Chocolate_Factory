@@ -34,7 +34,7 @@ public class CommentDAO {
 		try {
 			
 			String json = Reader.readFileAsString(contextpath);
-		System.out.println(json);
+		//System.out.println(json);
 		Type listType = new TypeToken<List<Comment>>(){}.getType();
 		List<Comment> retlist = gson.fromJson(json, listType);
 		return retlist;

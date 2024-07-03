@@ -4,6 +4,7 @@
           <h1>{{ name }}</h1>
           <img :src="logoImagePath" alt="Factory Logo" class="factory-logo" />
           <button class="add-button" @click="addChocolate">Add Chocolate</button>
+          <button class="addEmployee-button" @click="addEmployee">Add Employee</button>
           <button class="back-button" @click="goBack">Go back</button>
         </div>
         <div class="factory-details">
@@ -170,6 +171,10 @@ export default {
         {
             this.$router.push("/addChocolate/" + this.id);
         },
+        addEmployee()
+        {
+          this.$router.push("/createEmployee/" + this.id)
+        },
         goBack()
         {
             this.$router.push("/");
@@ -220,6 +225,22 @@ export default {
   .chocolate-cards .chocolate-card {
     width: 300px;
     margin: 10px;
+  }
+  .addEmployee-button {
+    background-color: #4caf50;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    cursor: pointer;
+    border: none;
+    border-radius: 4px;
+    position: absolute;
+    top: 20px;
+    right: 200px;
+
   }
   .add-button {
     background-color: #4caf50;

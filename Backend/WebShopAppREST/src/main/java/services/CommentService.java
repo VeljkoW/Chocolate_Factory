@@ -68,7 +68,7 @@ public class CommentService {
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public boolean delete(@PathParam("id") int id) {
-    	System.out.println(id);
+    	//System.out.println(id);
     	CommentDAO dao = (CommentDAO) ctx.getAttribute("CommentDAO");
     	return dao.delete(id);
     }

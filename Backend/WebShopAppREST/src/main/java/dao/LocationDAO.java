@@ -41,7 +41,7 @@ public class LocationDAO {
 			return null;
 		}
 	}
-    public boolean add(Location location) throws IOException {
+    public int add(Location location) throws IOException {
     	location.setId(location.hashCode());
     	locations.add(location);
         String json = gson.toJson(locations);
@@ -51,9 +51,9 @@ public class LocationDAO {
         }
         catch(Exception e){
         	e.printStackTrace();
-        	return false;
+        	return -1;
         }
-        return true;
+        return location.getId();
     }
 
     public boolean delete(int id) {

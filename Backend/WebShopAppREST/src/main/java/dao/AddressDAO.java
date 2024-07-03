@@ -40,7 +40,7 @@ public class AddressDAO {
 			return null;
 		}
 	}
-    public boolean add(Address address) throws IOException {
+    public int add(Address address) throws IOException {
     	address.setId(address.hashCode());
     	addresses.add(address);
         String json = gson.toJson(addresses);
@@ -50,9 +50,9 @@ public class AddressDAO {
         }
         catch(Exception e){
         	e.printStackTrace();
-        	return false;
+        	return -1;
         }
-        return true;
+        return address.getId();
     }
 
     public boolean delete(int id) {

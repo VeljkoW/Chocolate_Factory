@@ -6,12 +6,11 @@ import java.util.List;
 public class Purchase {
 	public int id;
 	public String uniqueId;
-	public List<Chocolate> chocolates;
-	public Factory factory;
+	public List<Integer> chocolates;
 	public int factoryId;
-	public LocalDate date;
+	public String date;
 	public double price;
-	public User user;
+	public int userId;
 	public String userNameSurname;
 	public String status;
 	public int getId() {
@@ -26,17 +25,11 @@ public class Purchase {
 	public void setUniqueId(String uniqueId) {
 		this.uniqueId = uniqueId;
 	}
-	public List<Chocolate> getChocolates() {
+	public List<Integer> getChocolates() {
 		return chocolates;
 	}
-	public void setChocolates(List<Chocolate> chocolates) {
+	public void setChocolates(List<Integer> chocolates) {
 		this.chocolates = chocolates;
-	}
-	public Factory getFactory() {
-		return factory;
-	}
-	public void setFactory(Factory factory) {
-		this.factory = factory;
 	}
 	public int getFactoryId() {
 		return factoryId;
@@ -44,10 +37,10 @@ public class Purchase {
 	public void setFactoryId(int factoryId) {
 		this.factoryId = factoryId;
 	}
-	public LocalDate getDate() {
+	public String getDate() {
 		return date;
 	}
-	public void setDate(LocalDate date) {
+	public void setDate(String date) {
 		this.date = date;
 	}
 	public double getPrice() {
@@ -56,11 +49,11 @@ public class Purchase {
 	public void setPrice(double price) {
 		this.price = price;
 	}
-	public User getUser() {
-		return user;
+	public int getUserId() {
+		return userId;
 	}
-	public void setUser(User user) {
-		this.user = user;
+	public void setUserId(int userId) {
+		this.userId = userId;
 	}
 	public String getUserNameSurname() {
 		return userNameSurname;
@@ -78,19 +71,18 @@ public class Purchase {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	public Purchase(int id, String uniqueId, List<Chocolate> chocolates, Factory factory, int factoryId, LocalDate date,
-			double price, User user, String status) {
+	public Purchase(int id, String uniqueId, List<Integer> chocolates, int factoryId, String date,
+			double price, int userId, String status) {
 		super();
 		this.id = id;
 		this.uniqueId = uniqueId;
 		this.chocolates = chocolates;
-		this.factory = factory;
 		this.factoryId = factoryId;
 		this.date = date;
 		this.price = price;
-		this.user = user;
+		this.userId = userId;
 		this.status = status;
-		this.userNameSurname = user.getName() + " " + user.getSurname();
+		this.userNameSurname = "";
 	}
 	
 	

@@ -49,9 +49,9 @@ public class FactoryDAO {
 			return null;
 		}
 	}
-	public boolean add(Factory factory) throws IOException {
+	public int add(Factory factory) throws IOException {
 		if (factory == null || !isValid(factory)) {
-	        return false;
+	        return -1;
 	    }
 		factory.setId(factory.hashCode());
         factories.add(factory);
@@ -59,7 +59,7 @@ public class FactoryDAO {
         if(factory.getGrade()<1 || factory.getLocationId()<0 || factory.getLogoImagePath().isEmpty() ||
         		factory.getName().isBlank() || factory.getStatus().isBlank() || factory.getClosingTime().isBlank() ||
         		factory.getOpeningTime().isBlank()) {
-        	return false;
+        	return -1;
         }
         String json = gson.toJson(factories);
         
@@ -68,9 +68,9 @@ public class FactoryDAO {
         }
         catch(Exception e){
         	e.printStackTrace();
-        	return false;
+        	return -1;
         }
-        return true;
+        return factory.getId();
     }
     public Factory update(Factory updatedFactory){
         if (updatedFactory == null || !isValid(updatedFactory)) {
