@@ -66,7 +66,9 @@
         username: '',
         password: '',
         role: 'Employee',
-        factoryId: -1
+        factoryId: -1,
+        blocked: false,
+        deleted: false
       };
     },
     mounted()
@@ -133,7 +135,9 @@
             uloga: this.role,
             factoryId: this.factoryId,
             points: 0,
-            userTypeId: 1
+            userTypeId: 1,
+            blocked: this.blocked,
+            deleted: this.deleted
           });
           if (response.status === 200) {
             alert('Registration successful!');

@@ -233,7 +233,7 @@ export default {
                 closingTime: this.closingTime,
                 logoImagePath: this.logoImagePath,
                 locationId: this.locationId,
-                status: "closed",
+                status: "Closed",
                 grade: 1,
             }).then(response => {
                 this.factoryId = response.data;

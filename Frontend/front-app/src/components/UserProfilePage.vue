@@ -57,6 +57,9 @@
         </table>
         <button type="submit">Edit Profile</button>
       </form>
+      <div>
+        <button class="delete-account-button" @click="confirmDeleteAccount">Delete account</button>
+      </div>
     </div>
   </template>
 <script>
@@ -124,6 +127,22 @@ export default {
       async edit()
       {
         this.$router.push('/edituserprofile/' + this.id);
+      },
+      confirmDeleteAccount()
+      {
+        if(confirm('Are you sure you want to delete your account?'))
+        {
+          this.deleteAccount();
+        }        
+      },
+      deleteAccount()
+      {
+        axios.put('http://localhost:8080/WebShopAppREST/rest/user/deleteUser?id=' + this.id).then(response => {
+          //add logout part AAAAAAAAAAAAA
+          this.$router.push('/');
+        }).catch(error => {
+                  alert('Error deleting user')
+              });
       }
     }
 }
@@ -135,6 +154,18 @@ export default {
   align-items: center;
   justify-content: center;
   height: calc(100vh - 40px - 40px);
-  margin-top: -100px;
+  margin-top: -70px;
+}
+.delete-account-button {
+  background-color: red !important;
+  color: white !important;
+  border-radius: 4px !important;
+  border: none !important;
+  cursor: pointer !important;
+  margin: 30px !important;
+}
+
+.delete-account-button:hover {
+  background-color: darkred !important;
 }
 </style>

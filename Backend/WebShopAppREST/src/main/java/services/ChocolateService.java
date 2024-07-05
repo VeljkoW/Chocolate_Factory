@@ -1,6 +1,7 @@
 package services;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -71,6 +72,13 @@ public class ChocolateService {
     public Chocolate update(Chocolate updatedChocolate) throws IOException {
         ChocolateDAO dao = (ChocolateDAO) ctx.getAttribute("ChocolateDAO");
         return dao.update(updatedChocolate);
+    }
+    @GET
+    @Path("/getAllVarieties")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<String> varieties(){
+        ChocolateDAO dao = (ChocolateDAO) ctx.getAttribute("ChocolateDAO");
+    	return dao.getAllVarieties();
     }
     @DELETE
     @Path("/{id}")

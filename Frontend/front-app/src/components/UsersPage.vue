@@ -57,6 +57,7 @@
             <th @click="sortUsers('uloga')">Role</th>
             <th @click="sortUsers('points')">Points</th>
             <th @click="sortUsers('type')">Type</th>
+            <th>Block</th>
           </tr>
         </thead>
         <tbody>
@@ -69,6 +70,18 @@
             <td>{{ user.uloga }}</td>
             <td>{{ user.points}}</td>
             <td>{{ getUserTypeName(user.userTypeId) }}</td>
+            <td>
+              <template v-if="user.uloga === 'Administrator'">
+              </template>
+              <template v-else>
+                <template v-if="user.blocked">
+                  <button class="unblock-button" @click="unblock(user.id)">Unblock</button>
+                </template>
+                <template v-else>
+                  <button class="block-button" @click="block(user.id)">Block</button>
+                </template>
+              </template>
+            </td>
           </tr>
         </tbody>
       </table>
@@ -148,12 +161,44 @@ export default {
     getUserTypes()
     {
       axios.get('http://localhost:8080/WebShopAppREST/rest/usertype/getall').then(response => this.usertypes = response.data).catch(error => {
-                alert('Error fetching usertypes')
+                alert('Error fetching usertypes');
             });
     },
     getUserTypeName(userTypeId) {
       const userType = this.usertypes.find(u => u.id === userTypeId);
       return userType ? userType.name : 'Unknown';
+    },
+    block(id)
+    {
+      if(id == null)
+      {
+        alert("User doesnt exist!");
+      }
+      axios.put('http://localhost:8080/WebShopAppREST/rest/user/blockUser?id=' + id).then(response => {
+        const user = this.filteredUsers.find(user => user.id === id);
+        if (user) {
+          user.blocked = true;
+        }
+      }).catch(error => {
+                alert('Error');
+            });
+
+    },
+    unblock(id)
+    {
+      if(id == null)
+    {
+      alert("User doesnt exist!");
+    }
+    axios.put('http://localhost:8080/WebShopAppREST/rest/user/unblockUser?id=' + id).then(response => {
+        const user = this.filteredUsers.find(user => user.id === id);
+        if (user) {
+          user.blocked = false;
+        }
+      }).catch(error => {
+                alert('Error');
+            });
+
     }
   }
 };
@@ -166,12 +211,40 @@ export default {
   color: white;
   text-align: center;
 }
+.block-button {
+  background-color: red !important;
+  color: white !important;
+  padding: 5px 18px !important;
+  font-size: 14px !important;
+  border-radius: 4px !important;
+  border: none !important;
+  cursor: pointer !important;
+  margin: 0 !important;
+}
 
+.block-button:hover {
+  background-color: darkred !important;
+}
+
+.unblock-button {
+  background-color: darkred !important;
+  color: white !important;
+  padding: 5px 10px !important;
+  font-size: 14px !important;
+  border-radius: 4px !important;
+  border: none !important;
+  cursor: pointer !important;
+  margin: 0 !important;
+}
+
+.unblock-button:hover {
+  background-color: darkred !important;
+}
 .filter-section {
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: 20px;
+  margin-top: 50px;
 }
 
 .filter-controls {
@@ -225,6 +298,9 @@ export default {
   cursor: pointer;
   border: none;
 }
+.reset-button:hover {
+  background-color: darkred;
+}
 
 .search-section {
   display: flex;
@@ -261,7 +337,7 @@ export default {
   align-items: center;
   justify-content: center;
   height: calc(90vh - 40px - 40px);
-  margin-top: -40px;
+  margin-top: 20px;
 }
 
 table {

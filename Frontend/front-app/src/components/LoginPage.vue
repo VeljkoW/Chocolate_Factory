@@ -86,6 +86,10 @@ export default {
                     {
                         alert('Incorrect password');
                     }
+                    else if(error.response.data === "Account has been blocked.")
+                    {
+                      alert('Account has been blocked.');
+                    }
                 }
                 else
                 {

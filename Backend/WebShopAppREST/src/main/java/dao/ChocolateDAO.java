@@ -38,7 +38,20 @@ public class ChocolateDAO {
 		getAll();
 		return chocolates.stream().filter(t -> t.getId() == id).findFirst().orElse(null);
 	}
-
+	public List<String> getAllVarieties()
+	{
+    	List<String> varieties = new ArrayList<String>();
+    	for (int i = 0; i < chocolates.size(); i++) 
+    	{
+            Chocolate chocolate = chocolates.get(i);
+    		String variety = chocolate.getVariety();
+    		if(!varieties.contains(variety))
+    		{
+    			varieties.add(variety);
+    		}
+    	}
+    	return varieties;
+	}
 	public List<Chocolate> getAll(){
 		try {
 			String json = Reader.readFileAsString(contextpath);

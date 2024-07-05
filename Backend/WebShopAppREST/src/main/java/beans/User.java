@@ -17,6 +17,8 @@ public class User {
 	private int factoryId;
 	private int points;
 	private int userTypeId;
+	private boolean blocked;
+	private boolean deleted;
 	
 	public User() {
 		super();
@@ -26,7 +28,7 @@ public class User {
 	
 	public User(int id, String username, String password, String name, String surname, String gender,
 			String dateOfBirth, String uloga, int factoryId, int points,
-			int userId) {
+			int userId,boolean blocked,boolean deleted) {
 		super();
 		this.id = id;
 		this.username = username;
@@ -41,6 +43,8 @@ public class User {
 		this.userTypeId = userId;
 		this.factoryId = factoryId;	//needs to change probably
 		//this.cartId = cartId;
+		this.blocked = blocked;
+		this.deleted = deleted;
 	}
 	public int getFactoryId() {
 		return factoryId;
@@ -98,6 +102,18 @@ public class User {
 	}
 	public String getDateOfBirth() {
 		return dateOfBirth;
+	}
+	public boolean getBlocked() {
+		return blocked;
+	}
+	public void setBlocked(boolean blocked) {
+		this.blocked = blocked;
+	}
+	public boolean getDeleted() {
+		return deleted;
+	}
+	public void setDeleted(boolean deleted) {
+		this.deleted = deleted;
 	}
 	public void setDateOfBirth(String dateOfBirth) {
 		this.dateOfBirth = dateOfBirth;

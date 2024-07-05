@@ -31,6 +31,10 @@ public class AddressService {
 	    	String contextPath = ctx.getRealPath("");
 			ctx.setAttribute("AddressDAO", new AddressDAO(contextPath));
 		}
+		if (ctx.getAttribute("LocationDAO") == null) {
+	    	String contextPath = ctx.getRealPath("");
+			ctx.setAttribute("LocationDAO", new LocationDAO(contextPath));
+		}
 	}
 	@GET
 	@Path("/")
@@ -61,6 +65,18 @@ public class AddressService {
     	System.out.println(id);
     	AddressDAO dao = (AddressDAO) ctx.getAttribute("AddressDAO");
     	return dao.delete(id);
+    }
+    @GET
+    @Path("/getPlaceByLocationId")
+    @Produces(MediaType.APPLICATION_JSON)
+    public String getPlaceName(@QueryParam("locationId") int locationId)
+    {
+    	AddressDAO dao = (AddressDAO) ctx.getAttribute("AddressDAO");
+    	LocationDAO locationDao = (LocationDAO) ctx.getAttribute("LocationDAO");
+    	
+    	Location location = locationDao.getById(locationId);
+    	Address address = dao.getById(location.getAddressId());
+    	return address.getPlace();
     }
     
 	public AddressService() {

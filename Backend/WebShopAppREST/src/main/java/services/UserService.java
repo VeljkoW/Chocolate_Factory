@@ -62,7 +62,11 @@ public class UserService {
 			}
 			if(passwordCorrect)
 			{
-				return Response.ok().build();
+				if(!user.getBlocked())
+				{
+					return Response.ok().build();
+				}
+				return Response.status(Response.Status.UNAUTHORIZED).entity("Account has been blocked.").build();
 			}
 			return Response.status(Response.Status.UNAUTHORIZED).entity("Incorrect password").build();
 		}
@@ -134,7 +138,66 @@ public class UserService {
 		
 		return dao.getAllByRole(role);
 	}
-	
+	@PUT
+	@Path("/blockUser")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response blockUser(@QueryParam("id") int id)
+	{
+		UserDAO dao = (UserDAO) ctx.getAttribute("UserDAO");
+		User user = dao.getById(id);
+		if(user != null)
+		{
+			if(!user.getUloga().equals("Administrator"))
+			{
+				if(dao.blockUser(user) != null)
+				{
+					return Response.ok().build();
+				}
+				return Response.status(Response.Status.UNAUTHORIZED).entity("Unexpected error!").build();
+			}
+			return Response.status(Response.Status.UNAUTHORIZED).entity("Cannot block administrator!").build();
+		}
+		return Response.status(Response.Status.UNAUTHORIZED).entity("User not found").build();
+	}
+	@PUT
+	@Path("/deleteUser")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response deleteUser(@QueryParam("id") int id)
+	{
+		UserDAO dao = (UserDAO) ctx.getAttribute("UserDAO");
+		User user = dao.getById(id);
+		if(user != null)
+		{
+				if(dao.deleteUser(user) != null)
+				{
+					return Response.ok().build();
+				}
+				return Response.status(Response.Status.UNAUTHORIZED).entity("Unexpected error!").build();
+		}
+		return Response.status(Response.Status.UNAUTHORIZED).entity("User not found").build();
+	}
+
+	@PUT
+	@Path("/unblockUser")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response unblockUser(@QueryParam("id") int id)
+	{
+		UserDAO dao = (UserDAO) ctx.getAttribute("UserDAO");
+		User user = dao.getById(id);
+		if(user != null)
+		{
+			if(!user.getUloga().equals("Administrator"))
+			{
+				if(dao.unblockUser(user) != null)
+				{
+					return Response.ok().build();
+				}
+				return Response.status(Response.Status.UNAUTHORIZED).entity("Unexpected error!").build();
+			}
+			return Response.status(Response.Status.UNAUTHORIZED).entity("Cannot unblock administrator!").build();
+		}
+		return Response.status(Response.Status.UNAUTHORIZED).entity("User not found").build();
+	}
 	
 	@PUT
 	@Path("/register")

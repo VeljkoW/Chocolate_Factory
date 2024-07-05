@@ -69,6 +69,7 @@ public class UserDAO {
 	            	user.setFactoryId(updatedUser.getFactoryId());
 	            	user.setPoints(updatedUser.getPoints());
 	            	user.setUserTypeId(updatedUser.getUserTypeId());
+	            	user.setBlocked(updatedUser.getBlocked());
 	            	users.set(i, user);
 	                if(write())
 	                	return user;
@@ -107,6 +108,45 @@ public class UserDAO {
 	        }
 	        return null;
 	}
+	public User blockUser(User updatedUser)
+	{
+		for (int i = 0; i < users.size(); i++) {
+            User user = users.get(i);
+            if (user.getId() == updatedUser.getId()) {
+            	user.setBlocked(true);
+            	users.set(i, user);
+                if(write())
+                	return user;
+            }
+        }
+        return null;
+	}
+	public User deleteUser(User updatedUser)
+	{
+		for (int i = 0; i < users.size(); i++) {
+            User user = users.get(i);
+            if (user.getId() == updatedUser.getId()) {
+            	user.setDeleted(true);
+            	users.set(i, user);
+                if(write())
+                	return user;
+            }
+        }
+        return null;
+	}
+	public User unblockUser(User updatedUser)
+	{
+		for (int i = 0; i < users.size(); i++) {
+            User user = users.get(i);
+            if (user.getId() == updatedUser.getId()) {
+            	user.setBlocked(false);
+            	users.set(i, user);
+                if(write())
+                	return user;
+            }
+        }
+        return null;
+	}
 	public User authenticatePassword(String username, String password)
 	{
 		User user = getByUserName(username);
@@ -124,7 +164,7 @@ public class UserDAO {
 		//System.out.println(json);
 		Type listType = new TypeToken<List<User>>(){}.getType();
 		List<User> jsondata = gson.fromJson(json, listType);
-		List<User> retlist = jsondata.stream().collect(Collectors.toList());
+		List<User> retlist = jsondata.stream().filter(t -> t.getDeleted() != true).collect(Collectors.toList()); //put it that it doesnt read deleted users
 		//System.out.println(retlist.size());
 		//System.out.println(retlist);
 		return retlist;
@@ -152,7 +192,7 @@ public class UserDAO {
 		return users.stream().filter(t -> t.getUloga().equals("Employee")).collect(Collectors.toList());
 	}
 	public List<User> getFreeManagers(){
-		return users.stream().filter(t -> t.getUloga().equals("Manager") && t.getFactoryId() == -1).collect(Collectors.toList());
+		return users.stream().filter(t -> t.getUloga().equals("Manager") && t.getFactoryId() == -1 && !t.getBlocked()).collect(Collectors.toList());
 	}
 	
 	

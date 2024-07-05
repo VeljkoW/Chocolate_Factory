@@ -65,7 +65,9 @@
         dateOfBirth: '',
         username: '',
         password: '',
-        role: 'Customer'
+        role: 'Customer',
+        blocked: false,
+        deleted: false
       };
     },
     methods: {
@@ -123,9 +125,12 @@
             uloga: this.role,
             factoryId: -1,
             points: 0,
-            userTypeId: 1
+            userTypeId: 1,
+            blocked: this.blocked,
+            deleted: this.deleted
           });
           if (response.status === 200) {
+            this.$router.push('/login');
             alert('Registration successful!');
           }
         } catch (error) {
