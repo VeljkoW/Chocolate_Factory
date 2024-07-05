@@ -12,6 +12,7 @@ import EmployeeCreationView from '../views/EmployeeCreationView.vue';
 import UsersView from '../views/UsersView.vue';
 import UserProfileView from '../views/UserProfileView.vue';
 import EditUserProfileView from '../views/EditUserProfileView.vue';
+import ShoppingCart from '../views/ShoppingCartView.vue';
 
 const routes = [
   {
@@ -51,6 +52,11 @@ const routes = [
     component: AddChocolateView,
   },
   {
+    path: "/cart/:id",
+    name: "ShoppingCart",
+    component: ShoppingCart,
+  },
+  {
     path: "/editChocolate/:id",
     name: "EditChocolateView",
     component: EditChocolateView,
@@ -59,6 +65,11 @@ const routes = [
     path: "/createEmployee/:id",
     name: "EmployeeCreationView",
     component: EmployeeCreationView
+  },
+  {
+    path: "/cart/:id",
+    name: "ShoppingCart",
+    component: ShoppingCart
   },
   {
     path: "/users",

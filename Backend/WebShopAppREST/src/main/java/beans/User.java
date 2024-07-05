@@ -15,7 +15,7 @@ public class User {
 	//private List<Purchase> purchases;
 	//private int cartId;
 	private int factoryId;
-	private int points;
+	private double points;
 	private int userTypeId;
 	private boolean blocked;
 	private boolean deleted;
@@ -52,10 +52,10 @@ public class User {
 	public void setFactoryId(int factoryId) {
 		this.factoryId = factoryId;
 	}
-	public int getPoints() {
+	public double getPoints() {
 		return points;
 	}
-	public void setPoints(int points) {
+	public void setPoints(double points) {
 		this.points = points;
 	}
 	public int getUserTypeId() {

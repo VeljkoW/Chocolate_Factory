@@ -1,24 +1,82 @@
 <template>
     <div v-if="chocolate" class="card-container-chocolate">
-        <div class="card-chocolate">
-        <div class="image-container-chocolate">
-          <img :src="chocolate.imagePath" alt="Chocolate Image" class="chocolate-image"/>
-        </div>
-          <div class="container-chocolate">
-            <h2>{{ chocolate.name }}</h2>
-            <p>Price: {{ chocolate.price }}</p>
-          </div>
-        </div>
-      </div>
-      <div v-else>
+        <table class="card-chocolate">
+            <tr>
+                <td colspan="2" class="image-container-chocolate">
+                    <img :src="chocolate.imagePath" alt="Chocolate Image" class="chocolate-image"/>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2" class="container-chocolate" @click="navigateToChocolate(chocolate.id)">
+                    <h2>{{ chocolate.name }}</h2>
+                    <p>Price: {{ chocolate.price }}</p>
+                </td>
+            </tr>
+            <tr v-if="userRole === 'Customer'">
+                <td colspan="2"><strong>Stock:</strong> {{ chocolate.stock }}</td>
+            </tr>
+            <tr v-if="userRole === 'Customer'">
+                <td>
+                    <input 
+                        type="number" 
+                        v-model.number="quantity" 
+                        min="1" 
+                        :max="chocolate.stock" 
+                        @input="checkQuantity"
+                    />
+                </td>
+                <td>
+                    <button @click="addToCart">Add</button>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div v-else>
         Loading...
-      </div>
+    </div>
 </template>
+
 <script>
 export default {
     name: 'ChocolateCard',
     props: {
-        chocolate: {}
+        chocolate: {
+            type: Object,
+            required: true
+        },
+        userRole: {
+            type: String,
+            required: true
+        }
+    },
+    data() {
+        return {
+            quantity: 1,
+        };
+    },
+    methods: {
+        addToCart() {
+            if (this.quantity <= this.chocolate.stock) {
+                this.$emit('add-to-cart', {
+                    chocolate: this.chocolate,
+                    quantity: this.quantity
+                });
+            } else {
+                alert('Quantity exceeds stock available');
+            }
+        },
+        navigateToChocolate(chocolateId)
+        {
+            this.$router.push("/chocolate/" + chocolateId);
+        },
+        checkQuantity() {
+            if (this.quantity < 1) {
+                this.quantity = 1;
+            }
+            else if(this.quantity>this.chocolate.stock){
+              this.quantity = this.chocolate.stock
+            }
+        },
     }
 }
 </script>

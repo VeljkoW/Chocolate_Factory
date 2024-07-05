@@ -2,6 +2,7 @@ package services;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -20,6 +21,7 @@ import javax.ws.rs.core.Response;
 import Utilities.JWTDecoder;
 import Utilities.Token;
 import beans.Cart;
+import beans.Chocolate;
 import beans.JWTUser;
 import beans.LoginRequest;
 import beans.User;
@@ -214,7 +216,7 @@ public class UserService {
 			if(obj.getUloga().equals("Customer")) {
 				if(cartdao.getByUserId(userId) == null)
 				{
-					Cart cart = new Cart(-1,new ArrayList<Integer>(),0,userId);
+					Cart cart = new Cart(-1,new HashMap<Integer,Integer>(),0,userId);
 					cartdao.add(cart);
 				}
 			}

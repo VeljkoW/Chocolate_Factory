@@ -1,17 +1,17 @@
 package beans;
 
 import java.time.LocalDate;
+import java.util.HashMap;
 import java.util.List;
 
 public class Purchase {
 	public int id;
 	public String uniqueId;
-	public List<Integer> chocolates;
+	public HashMap<Integer,Integer> chocolates;
 	public int factoryId;
 	public String date;
 	public double price;
 	public int userId;
-	public String userNameSurname;
 	public String status;
 	public int getId() {
 		return id;
@@ -25,10 +25,11 @@ public class Purchase {
 	public void setUniqueId(String uniqueId) {
 		this.uniqueId = uniqueId;
 	}
-	public List<Integer> getChocolates() {
+	
+	public HashMap<Integer, Integer> getChocolates() {
 		return chocolates;
 	}
-	public void setChocolates(List<Integer> chocolates) {
+	public void setChocolates(HashMap<Integer, Integer> chocolates) {
 		this.chocolates = chocolates;
 	}
 	public int getFactoryId() {
@@ -55,12 +56,6 @@ public class Purchase {
 	public void setUserId(int userId) {
 		this.userId = userId;
 	}
-	public String getUserNameSurname() {
-		return userNameSurname;
-	}
-	public void setUserNameSurname(String userNameSurname) {
-		this.userNameSurname = userNameSurname;
-	}
 	public String getStatus() {
 		return status;
 	}
@@ -71,7 +66,7 @@ public class Purchase {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	public Purchase(int id, String uniqueId, List<Integer> chocolates, int factoryId, String date,
+	public Purchase(int id, String uniqueId, HashMap<Integer,Integer> chocolates, int factoryId, String date,
 			double price, int userId, String status) {
 		super();
 		this.id = id;
@@ -82,8 +77,5 @@ public class Purchase {
 		this.price = price;
 		this.userId = userId;
 		this.status = status;
-		this.userNameSurname = "";
 	}
-	
-	
 }

@@ -31,7 +31,7 @@ public class ChocolateService {
 	@PostConstruct
 	public void init() {
 		if (ctx.getAttribute("ChocolateDAO") == null) {
-	    	String contextPath = ctx.getRealPath("");
+			String contextPath = ctx.getRealPath("");
 			ctx.setAttribute("ChocolateDAO", new ChocolateDAO(contextPath));
 		}
 	}

@@ -1,5 +1,10 @@
 package beans;
 
+import java.util.Objects;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
 public class Chocolate {
 	private int id;
 	private String name;
@@ -105,8 +110,46 @@ public class Chocolate {
 	public Chocolate() {
 		super();
 	}
-	
-	
-	
-	
+	@Override
+	public int hashCode() {
+		return Objects.hash(IsDeleted, description, factoryId, id, imagePath, mass, name, price, status, type,
+				variety);
+	}
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Chocolate other = (Chocolate) obj;
+		return IsDeleted == other.IsDeleted && Objects.equals(description, other.description)
+				&& factoryId == other.factoryId && id == other.id && Objects.equals(imagePath, other.imagePath)
+				&& Double.doubleToLongBits(mass) == Double.doubleToLongBits(other.mass)
+				&& Objects.equals(name, other.name)
+				&& Double.doubleToLongBits(price) == Double.doubleToLongBits(other.price)
+				&& Objects.equals(status, other.status) && Objects.equals(type, other.type)
+				&& Objects.equals(variety, other.variety);
+	}
+	@Override
+	public String toString() {
+	    StringBuilder sb = new StringBuilder();
+	    sb.append("{\n");
+	    sb.append("  \"description\": \"").append(description).append("\",\n");
+	    sb.append("  \"factoryId\": ").append(factoryId).append(",\n");
+	    sb.append("  \"id\": ").append(id).append(",\n");
+	    sb.append("  \"imagePath\": \"").append(imagePath).append("\",\n");
+	    sb.append("  \"IsDeleted\": ").append(IsDeleted).append(",\n");
+	    sb.append("  \"mass\": ").append(mass).append(",\n");
+	    sb.append("  \"name\": \"").append(name).append("\",\n");
+	    sb.append("  \"price\": ").append(price).append(",\n");
+	    sb.append("  \"status\": \"").append(status).append("\",\n");
+	    sb.append("  \"stock\": ").append(stock).append(",\n");
+	    sb.append("  \"type\": \"").append(type).append("\",\n");
+	    sb.append("  \"variety\": \"").append(variety).append("\"\n");
+	    sb.append("}");
+	    return sb.toString();
+	}
+
 }

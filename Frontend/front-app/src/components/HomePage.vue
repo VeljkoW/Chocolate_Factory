@@ -70,11 +70,12 @@
         </div>
 
         <div class="right-buttons">
-          <button class="profile-button" v-if="token" @click="navigateToProfile">My profile</button>
+            <button class="profile-button" v-if="token" @click="navigateToProfile">My profile</button>
+            <button class="profile-button" v-if="role=='Customer'" @click="navigateToCart">Cart</button>
           <button class="usersview-button" @click="navigateToUsers">View all users</button>
           <button class="createfactory-button" v-if="role === 'Administrator'" @click="navigateToCreateFactory">Create Factory</button>
           <button class="login-button" v-if="!token" @click="navigateToLogin">Log in</button>
-          <button class="login-button" v-if="token" @click="LogOut">Log out</button>
+          <button class="logout-button" v-if="token" @click="LogOut">Log out</button>
         </div>
       </div>
   
@@ -214,6 +215,9 @@ export default {
         {
             this.$router.push("/login");
         },
+        navigateToCart(){
+            this.$router.push("/cart/" + this.userid)
+        },
         navigateToCreateFactory()
         {
             this.$router.push("/factorycreate");
@@ -224,7 +228,7 @@ export default {
         },
         navigateToProfile()
         {
-            this.$router.push("/userprofile/" + this.userid) //change into logged user id when it is implemented
+            this.$router.push("/userprofile/" + this.userid)
         },
         toggleDropdown() 
         {

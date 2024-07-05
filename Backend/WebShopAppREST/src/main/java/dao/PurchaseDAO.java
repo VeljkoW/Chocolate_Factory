@@ -4,10 +4,15 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 
 import Utilities.Reader;
@@ -22,6 +27,7 @@ public class PurchaseDAO {
 	public PurchaseDAO(String a) {
 		contextpath=a.split(".metadata")[0]+"WebShopAppREST\\src\\main\\resources\\data\\purchases.json";
 		purchases=getAll();
+		gson = new GsonBuilder().registerTypeAdapter(new TypeToken<HashMap<Integer, Integer>>(){}.getType(), new HashMapAdapter()).create();
 	}
 	public Purchase getById(int id)
 	{
@@ -85,5 +91,16 @@ public class PurchaseDAO {
             return false;
         }
     	return true;
+    }
+    private static class HashMapAdapter implements com.google.gson.JsonSerializer<HashMap<Integer, Integer>> {
+        @Override
+        public JsonElement serialize(HashMap<Integer, Integer> map, Type type,
+                com.google.gson.JsonSerializationContext context) {
+            JsonObject jsonObject = new JsonObject();
+            for (Map.Entry<Integer, Integer> entry : map.entrySet()) {
+                jsonObject.addProperty(entry.getKey().toString(), entry.getValue());
+            }
+            return jsonObject;
+        }
     }
 }
