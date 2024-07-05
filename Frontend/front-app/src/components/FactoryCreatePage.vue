@@ -46,7 +46,7 @@
                     <td>*Logo Image Path :</td>
                     <td><input type="text" v-model="logoImagePath" id="logoImagePathTextbox"/></td>
                 </tr>
-                <tr>
+                <tr v-if="managers && managers.length">
                     <td>*Manager :</td>
                     <td>
                         <select v-model="managerId" id="managerIdTextbox">
@@ -56,6 +56,50 @@
                                 {{", " + manager.uloga }}
                             </option>
                         </select>
+                    </td>
+                </tr>
+                <tr v-if="!managers" style="text-align: center;">
+                    <h3>No mangers , sign a new one up!</h3>
+                </tr>
+                <tr v-if="!managers || !managers.length">
+                    <td >*Name:</td>
+                    <td >
+                    <input type="text" v-model="name" id="nameTextbox" class="input-box" />
+                    </td>
+                </tr>
+                <tr v-if="!managers || !managers.length">
+                    <td>*Surname:</td>
+                    <td>
+                    <input type="text" v-model="surname" id="surnameTextbox" class="input-box" />
+                    </td>
+                </tr>
+                <tr v-if="!managers || !managers.length">
+                    <td>*Gender:</td>
+                    <td>
+                    <select v-model="gender" id="genderSelect" class="input-box">
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>
+                        <option value="Mechanic">Mechanic</option>
+                        <option value="Other">Other</option>
+                    </select>
+                    </td>
+                </tr>
+                <tr v-if="!managers || !managers.length">
+                    <td>*Date of Birth:</td>
+                    <td>
+                    <input type="date" v-model="dateOfBirth" id="dateOfBirthInput" class="input-box" />
+                    </td>
+                </tr>
+                <tr v-if="!managers || !managers.length">
+                    <td>*Username:</td>
+                    <td>
+                    <input type="text" v-model="username" id="usernameTextbox" class="input-box" />
+                    </td>
+                </tr>
+                <tr v-if="!managers || !managers.length">
+                    <td>*Password:</td>
+                    <td>
+                    <input type="password" v-model="password" id="passwordTextbox" class="input-box" />
                     </td>
                 </tr>
             </table>
@@ -85,7 +129,13 @@ export default {
             managers: [],
             addressId: -1,
             locationId: -1,
-            factoryId: -1
+            factoryId: -1,
+            name: '',
+            surname: '',
+            gender: 'Male',
+            dateOfBirth: '',
+            username: '',
+            password: '',
         }
     },
     methods: {
@@ -170,18 +220,76 @@ export default {
             } else {
                 document.getElementById('logoImagePathTextbox').classList.remove('errorClass');
             }
-
-            if (this.managerId === null) {
-                document.getElementById('managerIdTextbox').classList.add('errorClass');
-                error = true;
-            } else {
-                document.getElementById('managerIdTextbox').classList.remove('errorClass');
+            if(this.managers && this.managers.length){
+                if (this.managerId === null ) {
+                    document.getElementById('managerIdTextbox').classList.add('errorClass');
+                    error = true;
+                } else {
+                    document.getElementById('managerIdTextbox').classList.remove('errorClass');
+                }
             }
-
+            if(!this.managers || !this.managers.length){
+                if (this.name === '') {
+                document.getElementById('nameTextbox').classList.add('errorClass');
+                error = true;
+                } else {
+                document.getElementById('nameTextbox').classList.remove('errorClass');
+                }
+                if (this.surname === '') {
+                document.getElementById('surnameTextbox').classList.add('errorClass');
+                error = true;
+                } else {
+                document.getElementById('surnameTextbox').classList.remove('errorClass');
+                }
+                if (this.gender === '') {
+                document.getElementById('genderSelect').classList.add('errorClass');
+                error = true;
+                } else {
+                document.getElementById('genderSelect').classList.remove('errorClass');
+                }
+                if (this.dateOfBirth === '') {
+                document.getElementById('dateOfBirthInput').classList.add('errorClass');
+                error = true;
+                } else {
+                document.getElementById('dateOfBirthInput').classList.remove('errorClass');
+                }
+                if (this.username === '') {
+                document.getElementById('usernameTextbox').classList.add('errorClass');
+                error = true;
+                } else {
+                document.getElementById('usernameTextbox').classList.remove('errorClass');
+                }
+                if (this.password === '') {
+                document.getElementById('passwordTextbox').classList.add('errorClass');
+                error = true;
+                } else {
+                document.getElementById('passwordTextbox').classList.remove('errorClass');
+                }
+            }
             if (error) {
                 return;
             }
             let addressId = -1;
+
+            if(!this.managers || !this.managers.length){
+                axios.put('http://localhost:8080/WebShopAppREST/rest/user/register', {
+                name: this.name,
+                surname: this.surname,
+                gender: this.gender,
+                dateOfBirth: this.dateOfBirth,
+                username: this.username,
+                password: this.password,
+                uloga: "Manager",
+                factoryId: -1,
+                points: 0,
+                userTypeId: 1,
+                blocked: false,
+                deleted: false
+            }).then(response =>{
+                let manager = response.data;
+                this.managerId=manager.id;
+            });
+            }
             axios.put('http://localhost:8080/WebShopAppREST/rest/address', {
                 id: -1,
                 street: this.street,

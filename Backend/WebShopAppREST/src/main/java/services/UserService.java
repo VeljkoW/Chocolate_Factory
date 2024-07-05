@@ -17,7 +17,10 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import Utilities.JWTDecoder;
+import Utilities.Token;
 import beans.Cart;
+import beans.JWTUser;
 import beans.LoginRequest;
 import beans.User;
 import dao.CartDAO;
@@ -47,35 +50,34 @@ public class UserService {
 		UserDAO dao =(UserDAO) ctx.getAttribute("UserDAO");
 		String username = loginRequest.getUsername();
 		String password = loginRequest.getPassword();
-		boolean usernameExists = false;
 		User user = dao.getByUserName(username);
-		if(user != null)
-		{
-			usernameExists = true;
-		}
-		if(usernameExists)
-		{
-			boolean passwordCorrect = false;
-			if(dao.authenticatePassword(username, password) != null)
-			{
-				passwordCorrect = true;
-			}
-			if(passwordCorrect)
-			{
-				if(!user.getBlocked())
-				{
-					return Response.ok().build();
-				}
-				return Response.status(Response.Status.UNAUTHORIZED).entity("Account has been blocked.").build();
-			}
-			return Response.status(Response.Status.UNAUTHORIZED).entity("Incorrect password").build();
-		}
-		else
+		if(user == null)
 		{
 			return Response.status(Response.Status.UNAUTHORIZED).entity("User does not exist").build();
 		}
+		if(!dao.authenticatePassword(username, password))
+		{
+			return Response.status(Response.Status.UNAUTHORIZED).entity("Incorrect password").build();
+		}
+		if(user.getBlocked())
+		{
+			return Response.status(Response.Status.UNAUTHORIZED).entity("Account has been blocked.").build();
+		}
+		
+		try {
+			return Response.ok(JWTDecoder.createToken(new JWTUser(user.getId(), user.getUsername(), user.getUloga().toString()), 43200000L)).build();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return Response.status(403).build();
 	}
-
+	@POST
+    @Path("/jwt/decode")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public JWTUser getJWTUser(Token token) throws Exception {
+        return JWTDecoder.verifyToken(token.token);
+    }
 	@GET
 	@Path("/all")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -206,14 +208,17 @@ public class UserService {
 		UserDAO dao =(UserDAO) ctx.getAttribute("UserDAO");
 		CartDAO cartdao =(CartDAO) ctx.getAttribute("CartDAO");
 		int userId = dao.add(obj);
+		obj.setId(userId);
 		if (userId != -1)
 		{
-			if(cartdao.getByUserId(userId) == null)
-			{
-				Cart cart = new Cart(-1,new ArrayList<Integer>(),0,userId);
-				cartdao.add(cart);
+			if(obj.getUloga().equals("Customer")) {
+				if(cartdao.getByUserId(userId) == null)
+				{
+					Cart cart = new Cart(-1,new ArrayList<Integer>(),0,userId);
+					cartdao.add(cart);
+				}
 			}
-			return Response.ok().build();
+			return Response.ok().entity(obj).build();
 		}
 		return Response.status(Response.Status.UNAUTHORIZED).entity("Username already exists").build();
 	}

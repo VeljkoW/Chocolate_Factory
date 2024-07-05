@@ -1,4 +1,5 @@
 import { createRouter, createWebHashHistory } from 'vue-router';
+import axios from 'axios';
 import HomeView from '../views/HomeView.vue';
 import FactoryView from '../views/FactoryView.vue';
 import ChocolateView from '../views/ChocolateView.vue';
@@ -37,6 +38,7 @@ const routes = [
     path: "/factorycreate",
     name: "FactoryCreateView",
     component: FactoryCreateView,
+    meta: { roles: ["Administrator"] },
   },
   {
     path: "/chocolate/:id",
@@ -79,5 +81,52 @@ const router = createRouter({
   history: createWebHashHistory(),
   routes
 })
+
+router.beforeEach(async (to, from, next) => {
+  const token = localStorage.getItem('token');
+  console.log(token);
+  if (token) {
+    try {
+      const response = await axios.post("http://localhost:8080/WebShopAppREST/rest/user/jwt/decode", {
+        token
+      }, {
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
+      console.log(response);
+
+      if (response.status === 200) {
+        let { id, username, role } = response.data;
+        console.log(id, username, role);
+
+        if (to.meta.roles) {
+          if (to.meta.roles.includes(role)) {
+            return next();
+          } else {
+            return next({ name: "home" });
+          }
+        } else {
+          return next();
+        }
+      } else {
+        localStorage.removeItem('token');
+        return next({ name: 'home' });
+      }
+    } catch (error) {
+      console.error('Failed to decode token:', error);
+      localStorage.removeItem('token');
+      return next({ name: 'home' });
+    }
+  } else {
+    if (to.meta.roles) {
+      return next({ name: "home" });
+    } else {
+      return next();
+    }
+  }
+
+  next();
+});
 
 export default router

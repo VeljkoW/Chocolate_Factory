@@ -79,7 +79,15 @@
                 </td>
             </tr>
         </table>
-        <button @click="EditChocolate">Edit Chocolate</button>
+        <table v-if="showEditQuantity">
+            <tr>
+                <td>
+                    <input type="number" v-model="stock">
+                </td>
+            </tr>
+        </table>
+        <button v-if="this.role == 'Manager'" @click="EditChocolate">Edit Chocolate</button>
+        <button v-if="this.role == 'Administrator'" @click="EditQuantity">Edit Chocolate</button>
         <button @click="DeleteChocolate">Delete Chocolate</button>
     </div>
 </div>
@@ -102,14 +110,45 @@ export default {
             image: '',
             stock: 0,
             factoryId: 0,
+            role:"",
+            userid: -1,
+            showEditQuantity:false,
+            chocolateId:-1,
         }
     },
     mounted()
     {
+        this.getRole();
         this.getChocolate();
     },
     methods:
     {
+        EditQuantity(){
+            this.chocolateId=this.$route.params.id
+            if(!this.showEditQuantity)
+            this.showEditQuantity=true
+            else{
+                this.showEditQuantity=false
+                axios.post('http://localhost:8080/WebShopAppREST/rest/chocolate/update', {
+                id: this.chocolateId,
+                name: this.name,
+                price: this.price,
+                variety: this.variety,
+                factoryId: this.factoryId,
+                type: this.type,
+                mass: this.mass,
+                description: this.description,
+                imagePath: this.image,
+                status: this.status,
+                stock: this.stock,
+            }).then(response => {
+                this.$router.push("/chocolate/" + this.chocolateId);
+            }).catch(error => {
+                alert(error.response.data);
+            });
+                
+            }
+        },
         getChocolate()
         {
             let chocolateId = this.$route.params.id;
@@ -129,9 +168,38 @@ export default {
                 this.image = response.data.imagePath;
                 this.stock = response.data.stock;
                 this.factoryId = response.data.factoryId;
+                this.quantity=response.data.stock;
             }).catch(error => {
                 alert(error.response.data);
             });
+        },
+        async getRole() {
+            const token = localStorage.getItem('token');
+            this.token = token;
+            console.log(token);
+            if (token) {
+                try {
+                    const response = await axios.post("http://localhost:8080/WebShopAppREST/rest/user/jwt/decode", {
+                        token
+                    }, {
+                        headers: {
+                            'Content-Type': 'application/json'
+                        }
+                    });
+                    console.log(response);
+                    if (response.status === 200) {
+                        const { id, username, role } = response.data;
+                        this.role = role;
+                        this.userid = id;
+                    } else {
+                        localStorage.removeItem('token');
+                    }
+                } catch (error) {
+                    console.error('Error verifying token:', error);
+                    localStorage.removeItem('token');
+                }
+                console.log(this.role);
+            }
         },
         EditChocolate()
         {

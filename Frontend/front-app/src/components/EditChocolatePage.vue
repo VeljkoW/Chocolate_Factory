@@ -112,6 +112,7 @@ export default {
             image: '',
             factoryId: 0,
             stock: 0,
+            chocolateId: 0
         }
     },
     mounted()
@@ -122,13 +123,13 @@ export default {
     {
         getChocolate()
         {
-            let chocolateId = this.$route.params.id;
-            if(chocolateId == null)
+            this.chocolateId = this.$route.params.id;
+            if(this.chocolateId <1)
             {
                 alert('factory not found');
                 return;
             }
-            axios.get('http://localhost:8080/WebShopAppREST/rest/chocolate/getById?id=' + chocolateId).then(response => {
+            axios.get('http://localhost:8080/WebShopAppREST/rest/chocolate/getById?id=' + this.chocolateId).then(response => {
                 this.name = response.data.name;
                 this.price = response.data.price;
                 this.variety = response.data.variety;

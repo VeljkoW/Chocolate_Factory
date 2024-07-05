@@ -147,14 +147,14 @@ public class UserDAO {
         }
         return null;
 	}
-	public User authenticatePassword(String username, String password)
+	public boolean authenticatePassword(String username, String password)
 	{
 		User user = getByUserName(username);
 		if(user.getPassword().equals(password))
 		{
-			return user;
+			return true;
 		}
-		return null;
+		return false;
 	}
 	
 	public List<User> getAll(){

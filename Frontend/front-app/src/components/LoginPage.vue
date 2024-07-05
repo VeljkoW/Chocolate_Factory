@@ -68,7 +68,9 @@ export default {
                 });
                 if(response.status === 200)
                 {
-                    alert('Login successful!');
+                  const token = response.data;
+                  localStorage.setItem('token', token);
+                  this.$router.push('/');
                 }
             }
             catch (error)

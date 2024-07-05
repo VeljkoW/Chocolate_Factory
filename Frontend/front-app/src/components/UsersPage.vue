@@ -104,11 +104,13 @@ export default {
       filteredUsers: [],
       sortKey: '',
       sortOrder: 1,
-      usertypes: []
+      usertypes: [],
+      role:"",
     };
   },
   created() {
     this.getUsers();
+    this.getRole();
     this.getUserTypes();
   },
   methods: {
@@ -122,6 +124,25 @@ export default {
         alert('Failed to fetch users. Please try again later.');
       }
     },
+    async getRole(){
+      const token = localStorage.getItem('token');
+      console.log(token);
+      if (token) {
+          const response = await axios.post("http://localhost:8080/WebShopAppREST/rest/user/jwt/decode", {
+            token
+          }, {
+            headers: {
+              'Content-Type': 'application/json'
+            }
+          });
+          console.log(response);
+          if (response.status === 200) {
+            let { id, username, role } = response.data;
+            this.role=role;
+            console.log(role)
+          }
+        }
+      },
     filterUsers() {
       this.filteredUsers = this.users.filter(user => {
         const matchesRole = this.selectedRole === '' || user.uloga === this.selectedRole;

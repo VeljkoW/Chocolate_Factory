@@ -70,10 +70,11 @@
         </div>
 
         <div class="right-buttons">
-          <button class="profile-button" @click="navigateToProfile">My profile</button>
+          <button class="profile-button" v-if="token" @click="navigateToProfile">My profile</button>
           <button class="usersview-button" @click="navigateToUsers">View all users</button>
-          <button class="createfactory-button" @click="navigateToCreateFactory">Create Factory</button>
-          <button class="login-button" @click="navigateToLogin">Log in</button>
+          <button class="createfactory-button" v-if="role === 'Administrator'" @click="navigateToCreateFactory">Create Factory</button>
+          <button class="login-button" v-if="!token" @click="navigateToLogin">Log in</button>
+          <button class="login-button" v-if="token" @click="LogOut">Log out</button>
         </div>
       </div>
   
@@ -114,11 +115,15 @@ export default {
             filterChocolateType: '',
             filterOpenFactories: '',
             filteredfactories: [],
-            sortDirection: 'asc'
+            sortDirection: 'asc',
+            role:"",
+            token:"",
+            userid:"",
         }
     },
     mounted()
     {
+        this.getRole();
         this.getfactories();
         this.getlocations();
         this.getAddresses();
@@ -138,6 +143,38 @@ export default {
                     alert(error.response.data);
                 }
             );
+        },
+        LogOut(){
+            localStorage.removeItem('token');
+            location.reload()
+        },
+        async getRole() {
+            const token = localStorage.getItem('token');
+            this.token = token;
+            console.log(token);
+            if (token) {
+                try {
+                    const response = await axios.post("http://localhost:8080/WebShopAppREST/rest/user/jwt/decode", {
+                        token
+                    }, {
+                        headers: {
+                            'Content-Type': 'application/json'
+                        }
+                    });
+                    console.log(response);
+                    if (response.status === 200) {
+                        const { id, username, role } = response.data;
+                        this.role = role;
+                        this.userid = id;
+                    } else {
+                        localStorage.removeItem('token');
+                    }
+                } catch (error) {
+                    console.error('Error verifying token:', error);
+                    localStorage.removeItem('token');
+                }
+                console.log(this.role);
+            }
         },
         getlocations()
         {
@@ -187,7 +224,7 @@ export default {
         },
         navigateToProfile()
         {
-            this.$router.push("/userprofile/" + "2") //change into logged user id when it is implemented
+            this.$router.push("/userprofile/" + this.userid) //change into logged user id when it is implemented
         },
         toggleDropdown() 
         {
