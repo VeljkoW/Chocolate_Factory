@@ -371,6 +371,10 @@ export default {
       });
     },
     async submitComment() {
+      if(this.newComment.comment == ''){
+        alert("Add a comment")
+        return
+      }
       try {
         const response = await axios.post('http://localhost:8080/WebShopAppREST/rest/comment/add', {
           userId: this.userid,
