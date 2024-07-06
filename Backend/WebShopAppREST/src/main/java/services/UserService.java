@@ -1,9 +1,14 @@
 package services;
 
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.annotation.PostConstruct;
 import javax.json.Json;
@@ -23,12 +28,17 @@ import javax.ws.rs.core.Response;
 
 import Utilities.JWTDecoder;
 import Utilities.Token;
+import Utilities.UserSusDTO;
 import beans.Cart;
 import beans.Chocolate;
+import beans.Comment;
 import beans.JWTUser;
 import beans.LoginRequest;
+import beans.Purchase;
 import beans.User;
 import dao.CartDAO;
+import dao.CommentDAO;
+import dao.PurchaseDAO;
 import dao.UserDAO;
 
 
@@ -50,6 +60,10 @@ public class UserService {
 		if (ctx.getAttribute("UserDAO") == null) {
 			String contextPath = ctx.getRealPath("");
 			ctx.setAttribute("UserDAO", new UserDAO(contextPath));
+		}
+		if (ctx.getAttribute("PurchaseDAO") == null) {
+			String contextPath = ctx.getRealPath("");
+			ctx.setAttribute("PurchaseDAO", new PurchaseDAO(contextPath));
 		}
 	}
 	@POST
@@ -90,9 +104,27 @@ public class UserService {
 	@GET
 	@Path("/all")
 	@Produces(MediaType.APPLICATION_JSON)
-	public List<User> getAll() throws IOException{
-		UserDAO dao =(UserDAO) ctx.getAttribute("UserDAO");
-		return dao.getAll();
+	public List<UserSusDTO> getAll() throws IOException {
+	    List<UserSusDTO> retlist = new ArrayList<>();
+	    UserDAO dao = (UserDAO) ctx.getAttribute("UserDAO");
+	    PurchaseDAO purchaseDAO = (PurchaseDAO) ctx.getAttribute("PurchaseDAO");
+
+	    List<Purchase> purchases = purchaseDAO.getAll();
+	    List<User> users = dao.getAll();
+
+	    for (User user : users) {
+	        List<Purchase> filteredPurchases = purchases.stream()
+	                .filter(p -> p.getUserId() == user.getId() && p.getStatus().equals("Otkazano"))
+	                .collect(Collectors.toList());
+	        System.out.println(filteredPurchases.size());
+	        if (filteredPurchases.size() > 0) {
+	            System.out.println("BOZE IMA");
+		        retlist.add(new UserSusDTO(user, true));
+	        } else {
+	            retlist.add(new UserSusDTO(user, false));
+	        }
+	    }
+	    return retlist;
 	}
 	@GET
 	@Path("/managers")

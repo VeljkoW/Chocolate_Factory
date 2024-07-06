@@ -14,9 +14,9 @@
           <option value="Administrator">Administrator</option>
         </select>
         <div class="filter-reset-buttons">
-        <button class="filter-button" @click="filterUsers">Filter</button>
-        <button class="reset-button" @click="resetFilter">Reset</button>
-      </div>
+          <button class="filter-button" @click="filterUsers">Filter</button>
+          <button class="reset-button" @click="resetFilter">Reset</button>
+        </div>
       </div>
     </div>
     <div class="filter-sectionTypes">
@@ -33,15 +33,17 @@
     <div class="search-section">
       <div class="search-field">
         <label for="usernameSearch">Username</label>
-        <input type="text" v-model="searchUsername" id="usernameSearch" placeholder="Search by username" class="search-input"/>
+        <input type="text" v-model="searchUsername" id="usernameSearch" placeholder="Search by username"
+          class="search-input" />
       </div>
       <div class="search-field">
         <label for="nameSearch">Name</label>
-        <input type="text" v-model="searchName" id="nameSearch" placeholder="Search by name" class="search-input"/>
+        <input type="text" v-model="searchName" id="nameSearch" placeholder="Search by name" class="search-input" />
       </div>
       <div class="search-field">
         <label for="surnameSearch">Surname</label>
-        <input type="text" v-model="searchSurname" id="surnameSearch" placeholder="Search by surname" class="search-input"/>
+        <input type="text" v-model="searchSurname" id="surnameSearch" placeholder="Search by surname"
+          class="search-input" />
       </div>
       <button class="search-button" @click="searchUsers">Search</button>
     </div>
@@ -68,7 +70,7 @@
             <td>{{ user.gender }}</td>
             <td>{{ user.dateOfBirth }}</td>
             <td>{{ user.uloga }}</td>
-            <td>{{ user.points}}</td>
+            <td>{{ user.points }}</td>
             <td>{{ getUserTypeName(user.userTypeId) }}</td>
             <td>
               <template v-if="user.uloga === 'Administrator'">
@@ -81,6 +83,39 @@
                   <button class="block-button" @click="block(user.id)">Block</button>
                 </template>
               </template>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="table-container-suspicious">
+      <h2>Suspicious Users</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Username</th>
+            <th>Name</th>
+            <th>Surname</th>
+            <th>Gender</th>
+            <th>Date of Birth</th>
+            <th>Role</th>
+            <th>Points</th>
+            <th>Type</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="user in suspiciousUsers" :key="user.username">
+            <td>{{ user.username }}</td>
+            <td>{{ user.name }}</td>
+            <td>{{ user.surname }}</td>
+            <td>{{ user.gender }}</td>
+            <td>{{ user.dateOfBirth }}</td>
+            <td>{{ user.uloga }}</td>
+            <td>{{ user.points }}</td>
+            <td>{{ getUserTypeName(user.userTypeId) }}</td>
+            <td>
+              <button class="unblock-button" @click="unblock(user.id)">Unblock</button>
             </td>
           </tr>
         </tbody>
@@ -102,10 +137,11 @@ export default {
       searchName: '',
       searchSurname: '',
       filteredUsers: [],
+      suspiciousUsers: [],
       sortKey: '',
       sortOrder: 1,
       usertypes: [],
-      role:"",
+      role: "",
     };
   },
   created() {
@@ -118,31 +154,32 @@ export default {
       try {
         const response = await axios.get('http://localhost:8080/WebShopAppREST/rest/user/all');
         this.users = response.data;
-        this.filteredUsers = this.users;
+        this.filteredUsers = this.users.filter(user => !user.suspicious);
+        this.suspiciousUsers = this.users.filter(user => user.suspicious);
       } catch (error) {
         console.error('Error fetching users:', error);
         alert('Failed to fetch users. Please try again later.');
       }
     },
-    async getRole(){
+    async getRole() {
       const token = localStorage.getItem('token');
       console.log(token);
       if (token) {
-          const response = await axios.post("http://localhost:8080/WebShopAppREST/rest/user/jwt/decode", {
-            token
-          }, {
-            headers: {
-              'Content-Type': 'application/json'
-            }
-          });
-          console.log(response);
-          if (response.status === 200) {
-            let { id, username, role } = response.data;
-            this.role=role;
-            console.log(role)
+        const response = await axios.post("http://localhost:8080/WebShopAppREST/rest/user/jwt/decode", {
+          token
+        }, {
+          headers: {
+            'Content-Type': 'application/json'
           }
+        });
+        console.log(response);
+        if (response.status === 200) {
+          let { id, username, role } = response.data;
+          this.role = role;
+          console.log(role)
         }
-      },
+      }
+    },
     filterUsers() {
       this.filteredUsers = this.users.filter(user => {
         const matchesRole = this.selectedRole === '' || user.uloga === this.selectedRole;
@@ -173,26 +210,23 @@ export default {
       this.filteredUsers.sort((a, b) => {
         const aValue = a[key] ? a[key].toString().toLowerCase() : '';
         const bValue = b[key] ? b[key].toString().toLowerCase() : '';
-        
+
         if (aValue < bValue) return -1 * this.sortOrder;
         if (aValue > bValue) return 1 * this.sortOrder;
         return 0;
       });
     },
-    getUserTypes()
-    {
+    getUserTypes() {
       axios.get('http://localhost:8080/WebShopAppREST/rest/usertype/getall').then(response => this.usertypes = response.data).catch(error => {
-                alert('Error fetching usertypes');
-            });
+        alert('Error fetching usertypes');
+      });
     },
     getUserTypeName(userTypeId) {
       const userType = this.usertypes.find(u => u.id === userTypeId);
       return userType ? userType.name : 'Unknown';
     },
-    block(id)
-    {
-      if(id == null)
-      {
+    block(id) {
+      if (id == null) {
         alert("User doesnt exist!");
       }
       axios.put('http://localhost:8080/WebShopAppREST/rest/user/blockUser?id=' + id).then(response => {
@@ -201,24 +235,22 @@ export default {
           user.blocked = true;
         }
       }).catch(error => {
-                alert('Error');
-            });
+        alert('Error');
+      });
 
     },
-    unblock(id)
-    {
-      if(id == null)
-    {
-      alert("User doesnt exist!");
-    }
-    axios.put('http://localhost:8080/WebShopAppREST/rest/user/unblockUser?id=' + id).then(response => {
+    unblock(id) {
+      if (id == null) {
+        alert("User doesnt exist!");
+      }
+      axios.put('http://localhost:8080/WebShopAppREST/rest/user/unblockUser?id=' + id).then(response => {
         const user = this.filteredUsers.find(user => user.id === id);
         if (user) {
           user.blocked = false;
         }
       }).catch(error => {
-                alert('Error');
-            });
+        alert('Error');
+      });
 
     }
   }
@@ -232,6 +264,7 @@ export default {
   color: white;
   text-align: center;
 }
+
 .block-button {
   background-color: red !important;
   color: white !important;
@@ -261,6 +294,7 @@ export default {
 .unblock-button:hover {
   background-color: darkred !important;
 }
+
 .filter-section {
   display: flex;
   justify-content: center;
@@ -273,16 +307,20 @@ export default {
   align-items: center;
 }
 
-.filter-select, .filter-button, .reset-button {
+.filter-select,
+.filter-button,
+.reset-button {
   margin: 0 5px;
   padding: 10px;
   font-size: 16px;
   border-radius: 4px;
   border: 1px solid #ccc;
 }
+
 .filter-select {
-    width: 630px;
+  width: 630px;
 }
+
 .filter-sectionTypes {
   display: flex;
   justify-content: center;
@@ -296,16 +334,18 @@ export default {
   align-items: center;
 }
 
-.filter-selectTypes{
+.filter-selectTypes {
   margin: 0 5px;
   padding: 10px;
   font-size: 16px;
   border-radius: 4px;
   border: 1px solid #ccc;
 }
+
 .filter-selectTypes {
-    width: 630px;
+  width: 630px;
 }
+
 .filter-button {
   background-color: #4caf50;
   color: white;
@@ -319,6 +359,7 @@ export default {
   cursor: pointer;
   border: none;
 }
+
 .reset-button:hover {
   background-color: darkred;
 }
@@ -337,7 +378,8 @@ export default {
   margin: 0 10px;
 }
 
-.search-input, .search-button {
+.search-input,
+.search-button {
   margin-top: 18px;
   padding: 10px;
   font-size: 16px;
@@ -372,7 +414,8 @@ table {
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
 }
 
-table th, table td {
+table th,
+table td {
   padding: 12px 15px;
   text-align: left;
   cursor: pointer;

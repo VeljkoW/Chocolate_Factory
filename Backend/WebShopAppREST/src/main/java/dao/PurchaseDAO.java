@@ -102,13 +102,8 @@ public class PurchaseDAO {
     	if(c==null) {
     		return false;
     	}
-    	purchases.remove(c);
-    	
-
-    	if(write()) {
-    		return true;
-    	}
-    	return false;
+    	c.setDeleted(true);
+    	return write();
     }
     public boolean write() {
         String json = gson.toJson(purchases);

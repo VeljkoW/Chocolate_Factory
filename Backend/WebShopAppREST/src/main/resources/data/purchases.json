@@ -1,1 +1,66 @@
-[{"id":668951986,"uniqueId":"ABCDEFGHIJ","chocolates":{"623707803":1,"76932474":1},"factoryId":976151595,"date":"01/05/2022","price":15.0,"userId":2026848788,"status":"Odobreno"},{"id":159132127,"uniqueId":"ABCDEFGHIJ","chocolates":{"623707803":1,"76932474":1},"factoryId":976151595,"date":"01/05/2022","price":15.0,"userId":2026848788,"status":"Obrada"},{"id":1776188300,"uniqueId":"BmIKg2NtlD","chocolates":{"623707803":1,"76932474":1},"factoryId":976151595,"date":"01/05/2022","price":66.0,"userId":2026848788,"status":"Otkazano"},{"id":1302625562,"uniqueId":"qPDOwMfe2d","chocolates":{"623707803":1,"76932474":55},"factoryId":976151595,"date":"01/05/2022","price":140.0,"userId":2026848788,"status":"Odbijeno"},{"id":923332338,"uniqueId":"fxLVM9mlsI","chocolates":{"76932474":5000},"factoryId":976151595,"date":"01/05/2022","price":12500.0,"userId":2026848788,"status":"Odbijeno"}]
+[
+    {
+        "chocolates": {
+            "623707803": 1,
+            "76932474": 1
+        },
+        "date": "01/05/2022",
+        "factoryId": 976151595,
+        "id": 668951986,
+        "price": 15.0,
+        "status": "Odobreno",
+        "uniqueId": "ABCDEFGHIJ",
+        "userId": 2026848788
+    },
+    {
+        "chocolates": {
+            "623707803": 1,
+            "76932474": 1
+        },
+        "date": "01/05/2022",
+        "factoryId": 976151595,
+        "id": 159132127,
+        "price": 15.0,
+        "status": "Obrada",
+        "uniqueId": "ABCDEFGHIJ",
+        "userId": 2026848788
+    },
+    {
+        "chocolates": {
+            "623707803": 1,
+            "76932474": 1
+        },
+        "date": "01/05/2024",
+        "factoryId": 976151595,
+        "id": 1776188300,
+        "price": 66.0,
+        "status": "Otkazano",
+        "uniqueId": "BmIKg2NtlD",
+        "userId": 2026848788
+    },
+    {
+        "chocolates": {
+            "623707803": 1,
+            "76932474": 55
+        },
+        "date": "01/05/2022",
+        "factoryId": 976151595,
+        "id": 1302625562,
+        "price": 140.0,
+        "status": "Odbijeno",
+        "uniqueId": "qPDOwMfe2d",
+        "userId": 2026848788
+    },
+    {
+        "chocolates": {
+            "76932474": 5000
+        },
+        "date": "01/05/2022",
+        "factoryId": 976151595,
+        "id": 923332338,
+        "price": 12500.0,
+        "status": "Odbijeno",
+        "uniqueId": "fxLVM9mlsI",
+        "userId": 2026848788
+    }
+]

@@ -13,6 +13,27 @@ public class Purchase {
 	public double price;
 	public int userId;
 	public String status;
+	public boolean deleted;
+	
+	public boolean isDeleted() {
+		return deleted;
+	}
+	public void setDeleted(boolean deleted) {
+		this.deleted = deleted;
+	}
+	public Purchase(int id, String uniqueId, HashMap<Integer, Integer> chocolates, int factoryId, String date,
+			double price, int userId, String status, boolean deleted) {
+		super();
+		this.id = id;
+		this.uniqueId = uniqueId;
+		this.chocolates = chocolates;
+		this.factoryId = factoryId;
+		this.date = date;
+		this.price = price;
+		this.userId = userId;
+		this.status = status;
+		this.deleted = deleted;
+	}
 	public int getId() {
 		return id;
 	}
@@ -65,17 +86,5 @@ public class Purchase {
 	public Purchase() {
 		super();
 		// TODO Auto-generated constructor stub
-	}
-	public Purchase(int id, String uniqueId, HashMap<Integer,Integer> chocolates, int factoryId, String date,
-			double price, int userId, String status) {
-		super();
-		this.id = id;
-		this.uniqueId = uniqueId;
-		this.chocolates = chocolates;
-		this.factoryId = factoryId;
-		this.date = date;
-		this.price = price;
-		this.userId = userId;
-		this.status = status;
 	}
 }

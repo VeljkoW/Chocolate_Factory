@@ -229,7 +229,7 @@ public class CartService {
 	                        System.err.println("Chocolate with ID " + chocolateId + " not found.");
 	                    }
 	                }
-	            	purchaseDAO.add(new Purchase(-1, generateUniqueId(), cart.getChocolates(), factoryId, "01/05/2022", totalPrice, userToken.id, "Obrada"));
+	            	purchaseDAO.add(new Purchase(-1, generateUniqueId(), cart.getChocolates(), factoryId, "01/05/2022", totalPrice, userToken.id, "Obrada",false));
 	                cart.setChocolates(new HashMap<>());
 	                dao.update(cart);
 	                
