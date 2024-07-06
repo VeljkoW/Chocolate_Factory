@@ -72,7 +72,7 @@
         <div class="right-buttons">
             <button class="profile-button" v-if="token" @click="navigateToProfile">My profile</button>
             <button class="profile-button" v-if="role=='Customer'" @click="navigateToCart">Cart</button>
-          <button class="usersview-button" @click="navigateToUsers">View all users</button>
+          <button class="usersview-button" v-if="role=='Administrator'" @click="navigateToUsers">View all users</button>
           <button class="createfactory-button" v-if="role === 'Administrator'" @click="navigateToCreateFactory">Create Factory</button>
           <button class="login-button" v-if="!token" @click="navigateToLogin">Log in</button>
           <button class="logout-button" v-if="token" @click="LogOut">Log out</button>

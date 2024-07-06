@@ -157,7 +157,7 @@ public class PurchaseService {
         	return Response.status(Response.Status.NOT_FOUND).entity("Purchase not found or could not be cancelled.").build();
         }
         User user = userDAO.getById(purchaseDAO.getById(id).userId);
-        user.setPoints(user.getPoints()-(p.price*1000*133*4));
+        user.setPoints(user.getPoints()-(p.price/1000*133*4));
         userDAO.update(user);
         purchaseDAO.deleteById(id);
             return Response.status(Response.Status.OK).entity("Purchase cancelled successfully.").build();

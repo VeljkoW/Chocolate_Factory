@@ -50,6 +50,7 @@ const routes = [
     path: "/addChocolate/:id",
     name: "AddChocolateView",
     component: AddChocolateView,
+    meta:{roles:["Manager","Administrator"]}
   },
   {
     path: "/cart/:id",
@@ -64,7 +65,8 @@ const routes = [
   {
     path: "/createEmployee/:id",
     name: "EmployeeCreationView",
-    component: EmployeeCreationView
+    component: EmployeeCreationView,
+    meta:{roles:["Manager"]}
   },
   {
     path: "/cart/:id",
@@ -136,7 +138,6 @@ router.beforeEach(async (to, from, next) => {
       return next();
     }
   }
-
   next();
 });
 

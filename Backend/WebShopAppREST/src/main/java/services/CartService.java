@@ -234,7 +234,7 @@ public class CartService {
 	                dao.update(cart);
 	                
 	                User user = userDAO.getById(userToken.id);
-	                user.setPoints(user.getPoints()+(totalPrice*1000*133));
+	                user.setPoints(user.getPoints()+(totalPrice/1000*133));
 	                userDAO.update(user);
 	                return Response.ok().entity("Purchase successful").build();
 	            	}

@@ -3,8 +3,8 @@
     <div class="top-section">
       <h1>{{ name }}</h1>
       <img :src="logoImagePath" alt="Factory Logo" class="factory-logo" />
-      <button class="add-button" @click="addChocolate">Add Chocolate</button>
-      <button class="addEmployee-button" @click="addEmployee">Add Employee</button>
+      <button class="add-button" v-if="userRole == 'Manager'" @click="addChocolate">Add Chocolate</button>
+      <button class="addEmployee-button" v-if="userRole == 'Manager'" @click="addEmployee">Add Employee</button>
       <button class="back-button" @click="goBack">Go back</button>
     </div>
     <div class="factory-details">
@@ -371,6 +371,10 @@ export default {
       });
     },
     async submitComment() {
+      if(this.newComment.comment == ''){
+        alert("Add a comment")
+        return
+      }
       try {
         const response = await axios.post('http://localhost:8080/WebShopAppREST/rest/comment/add', {
           userId: this.userid,
