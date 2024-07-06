@@ -5,8 +5,15 @@ public class Comment {
 	private int userId;
 	private int factoryId;
 	private String comment;
-	private int grade;	
+	private int grade;
+	private String status;
 	
+	public String getStatus() {
+		return status;
+	}
+	public void setStatus(String status) {
+		this.status = status;
+	}
 	public int getId() {
 		return id;
 	}
@@ -41,13 +48,14 @@ public class Comment {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	public Comment(int id, int userId, int factoryId, String comment, int grade) {
+	public Comment(int id, int userId, int factoryId, String comment, int grade,String status) {
 		super();
 		this.id = id;
 		this.comment = comment;
 		this.grade = grade;
 		this.factoryId = factoryId;
 		this.userId = userId;
+		this.status=status;
 	}
 	
 	

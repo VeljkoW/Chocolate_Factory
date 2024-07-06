@@ -6,12 +6,15 @@ import java.util.HashMap;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
+import javax.json.Json;
+import javax.json.JsonObject;
 import javax.servlet.ServletContext;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
@@ -43,6 +46,10 @@ public class UserService {
 		if (ctx.getAttribute("CartDAO") == null) {
 			String contextPath = ctx.getRealPath("");
 			ctx.setAttribute("CartDAO", new CartDAO(contextPath));
+		}
+		if (ctx.getAttribute("UserDAO") == null) {
+			String contextPath = ctx.getRealPath("");
+			ctx.setAttribute("UserDAO", new UserDAO(contextPath));
 		}
 	}
 	@POST
@@ -232,4 +239,28 @@ public class UserService {
 		UserDAO dao =(UserDAO) ctx.getAttribute("UserDAO");
 		return dao.getById(id);
 	}
+	
+	@GET
+    @Path("/getManagerFactory")
+    public Response getManagerFactory(@QueryParam("userId") int userId) {
+        	System.out.println(userId);
+            // Assume UserService and FactoryService are services that handle business logic
+            UserDAO userDAO =(UserDAO) ctx.getAttribute("UserDAO");
+
+            // Fetch the user by userId
+            User user = userDAO.getById(userId);
+            if (user == null) {
+                return Response.status(Response.Status.NOT_FOUND).entity("User not found").build();
+            }
+
+            int factoryId=user.getFactoryId();
+            if (factoryId == -1) {
+                return Response.status(Response.Status.NOT_FOUND).entity("Factory not found for the manager").build();
+            }
+            JsonObject responseObject = Json.createObjectBuilder()
+                .add("factoryId", factoryId)
+                .build();
+            return Response.ok(responseObject).build();
+            //return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Error retrieving factory information").build();
+    }
 }

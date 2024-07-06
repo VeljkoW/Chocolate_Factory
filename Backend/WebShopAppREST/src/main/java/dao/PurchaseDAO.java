@@ -37,6 +37,34 @@ public class PurchaseDAO {
 		}
 		return purchases.stream().filter(t -> t.getId() == id).findFirst().orElse(null);
 	}
+	public List<Purchase> getByUserId(int id)
+	{
+		if(purchases == null)
+		{
+			return null;
+		}
+		return purchases.stream().filter(t -> t.getUserId() == id).collect(Collectors.toList());
+	}
+	
+	public List<Purchase> getByFactoryId(int id)
+	{
+		if(purchases == null)
+		{
+			return null;
+		}
+		return purchases.stream().filter(t -> t.getFactoryId() == id).collect(Collectors.toList());
+	}
+	//updatePurchaseStatus
+	public boolean updatePurchaseStatus(Integer id,String Status) {
+		Purchase p =getById(id);
+		Integer index = purchases.indexOf(p);
+		purchases.remove(p);
+		
+		p.setStatus(Status);
+		purchases.add(index, p);
+		return write();
+	}
+	
 	public List<Purchase> getAll(){
 		try {
 		System.out.println(contextpath);

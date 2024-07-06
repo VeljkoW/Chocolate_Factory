@@ -10,6 +10,7 @@ import java.util.stream.Collectors;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+import Utilities.CommentNewDTO;
 import Utilities.Reader;
 import beans.Chocolate;
 import beans.Comment;
@@ -44,6 +45,26 @@ public class CommentDAO {
 			return null;
 		}
 	}
+    public boolean addFromDTO(CommentNewDTO newcomment) throws IOException {
+    	Comment c = new Comment();
+    	c.setComment(newcomment.comment);
+    	c.setFactoryId(newcomment.factoryId);
+    	c.setId(c.hashCode());
+    	c.setGrade(newcomment.grade);
+    	c.setStatus("Zahtev");
+    	c.setUserId(newcomment.userId);
+    	comments.add(c);
+        String json = gson.toJson(comments);
+        
+        try (FileWriter writer = new FileWriter(contextpath)) {
+            writer.write(json);
+        }
+        catch(Exception e){
+        	e.printStackTrace();
+        	return false;
+        }
+        return true;
+    }
     public boolean add(Comment comment) throws IOException {
     	comment.setId(comment.hashCode());
     	comments.add(comment);
@@ -86,8 +107,29 @@ public class CommentDAO {
     	}
     	return false;
     }
-    
-    
+    public boolean approveComment(int id) {
+        Comment c = comments.stream()
+                            .filter(t -> t.getId() == id)
+                            .findFirst()
+                            .orElse(null);
+        if (c == null) {
+            return false;
+        }
+        c.setStatus("Odobren");
+        return write();
+    }
+
+    public boolean rejectComment(int id) {
+        Comment c = comments.stream()
+                            .filter(t -> t.getId() == id)
+                            .findFirst()
+                            .orElse(null);
+        if (c == null) {
+            return false;
+        }
+        c.setStatus("Odbijen");
+        return write();
+    }
     
     public boolean write() {
         String json = gson.toJson(comments);

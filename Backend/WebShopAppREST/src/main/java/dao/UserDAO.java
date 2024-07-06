@@ -87,6 +87,7 @@ public class UserDAO {
 	            	user.setSurname(updatedUser.getSurname());
 	            	user.setGender(updatedUser.getGender());
 	            	user.setDateOfBirth(updatedUser.getDateOfBirth());
+	            	user.setPoints(updatedUser.getPoints());
 	            	users.set(i, user);
 	                if(write())
 	                	return user;

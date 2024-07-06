@@ -3,6 +3,7 @@ import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.ServletContext;
@@ -199,6 +200,7 @@ public class CartService {
 	public Response checkout(CheckoutDTO token) throws Exception {
 	    CartDAO dao = (CartDAO) ctx.getAttribute("CartDAO");
 	    PurchaseDAO purchaseDAO=(PurchaseDAO)ctx.getAttribute("PurchaseDAO");
+		ChocolateDAO chocolateDAO=(ChocolateDAO)ctx.getAttribute("ChocolateDAO");
 	    UserDAO userDAO=(UserDAO)ctx.getAttribute("UserDAO");
 	    JWTUser userToken = JWTDecoder.verifyToken(token.token);
 	    try {
@@ -206,14 +208,36 @@ public class CartService {
 	        if (userToken != null) {
 	            Cart cart = dao.getByUserId(userToken.getId());
 	            if (cart != null) {
-	            	purchaseDAO.add(new Purchase(-1, generateUniqueId(), cart.getChocolates(), -1, "01/05/2022", token.price, -1, "Obrada"));
+	            	Chocolate chocolate = new Chocolate();
+	            	for(int i : cart.getChocolates().keySet()) {
+	            		chocolate = chocolateDAO.getById(i);
+	            		break;
+	            	}
+	            	if(chocolate!=null) {
+	            	Integer factoryId=chocolate.getFactoryId();
+	            	
+	            	double totalPrice = 0.0;
+	                for (Map.Entry<Integer, Integer> entry : cart.getChocolates().entrySet()) {
+	                    int chocolateId = entry.getKey();
+	                    int quantity = entry.getValue();
+	                    
+	                    Chocolate c = chocolateDAO.getById(chocolateId);
+	                    
+	                    if (c != null) {
+	                        totalPrice += chocolate.getPrice() * quantity;
+	                    } else {
+	                        System.err.println("Chocolate with ID " + chocolateId + " not found.");
+	                    }
+	                }
+	            	purchaseDAO.add(new Purchase(-1, generateUniqueId(), cart.getChocolates(), factoryId, "01/05/2022", totalPrice, userToken.id, "Obrada"));
 	                cart.setChocolates(new HashMap<>());
 	                dao.update(cart);
 	                
 	                User user = userDAO.getById(userToken.id);
-	                user.setPoints(user.getPoints()+(token.price*1000/133));
+	                user.setPoints(user.getPoints()+(totalPrice*1000*133));
 	                userDAO.update(user);
 	                return Response.ok().entity("Purchase successful").build();
+	            	}
 	            } else {
 	                return Response.status(Response.Status.NOT_FOUND).entity("Cart not found").build();
 	            }
