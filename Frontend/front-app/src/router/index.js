@@ -50,6 +50,7 @@ const routes = [
     path: "/addChocolate/:id",
     name: "AddChocolateView",
     component: AddChocolateView,
+    meta: { roles: ["Administrator","Manager"] },
   },
   {
     path: "/cart/:id",
@@ -60,11 +61,13 @@ const routes = [
     path: "/editChocolate/:id",
     name: "EditChocolateView",
     component: EditChocolateView,
+    meta: { roles: ["Administrator","Manager"] },
   },
   {
     path: "/createEmployee/:id",
     name: "EmployeeCreationView",
-    component: EmployeeCreationView
+    component: EmployeeCreationView,
+    meta: { roles: ["Administrator","Manager"] },
   },
   {
     path: "/cart/:id",
@@ -74,7 +77,8 @@ const routes = [
   {
     path: "/users",
     name: "UsersView",
-    component: UsersView
+    component: UsersView,
+    meta: { roles: ["Administrator"] },
   },
   {
     path: "/userprofile/:id",

@@ -86,6 +86,10 @@ public class UserService {
 		{
 			return Response.status(Response.Status.UNAUTHORIZED).entity("Account has been blocked.").build();
 		}
+		if(user.getDeleted())
+		{
+			return Response.status(Response.Status.UNAUTHORIZED).entity("Account has been deleted.").build();
+		}
 		
 		try {
 			return Response.ok(JWTDecoder.createToken(new JWTUser(user.getId(), user.getUsername(), user.getUloga().toString()), 43200000L)).build();

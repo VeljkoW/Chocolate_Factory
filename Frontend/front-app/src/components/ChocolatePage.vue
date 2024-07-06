@@ -86,9 +86,9 @@
                 </td>
             </tr>
         </table>
-        <button v-if="this.role == 'Manager'" @click="EditChocolate">Edit Chocolate</button>
-        <button v-if="this.role == 'Employee'" @click="EditQuantity">Edit Quantity</button>
-        <button @click="DeleteChocolate">Delete Chocolate</button>
+        <button v-if="this.role == 'Manager' || this.role == 'Administrator'" @click="EditChocolate">Edit Chocolate</button>
+        <button v-if="this.role == 'Employee' || this.role == 'Administrator'" @click="EditQuantity">Edit Quantity</button>
+        <button v-if="this.role=='Administrator' || this.role=='Manager'" @click="DeleteChocolate">Delete Chocolate</button>
     </div>
 </div>
 </template>

@@ -3,8 +3,8 @@
     <div class="top-section">
       <h1>{{ name }}</h1>
       <img :src="logoImagePath" alt="Factory Logo" class="factory-logo" />
-      <button class="add-button" @click="addChocolate">Add Chocolate</button>
-      <button class="addEmployee-button" @click="addEmployee">Add Employee</button>
+      <button v-if="(this.userRole=='Manager' && managersFactory === id) || this.userRole == 'Administrator'" class="add-button"  @click="addChocolate">Add Chocolate</button>
+      <button v-if="(this.userRole=='Manager' && managersFactory === id) || this.userRole == 'Administrator'" class="addEmployee-button" @click="addEmployee">Add Employee</button>
       <button class="back-button" @click="goBack">Go back</button>
     </div>
     <div class="factory-details">

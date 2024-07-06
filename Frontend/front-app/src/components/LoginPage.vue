@@ -92,6 +92,10 @@ export default {
                     {
                       alert('Account has been blocked.');
                     }
+                    else if(error.response.data === "Account has been deleted.")
+                    {
+                      alert('Account has been deleted.');
+                    }
                 }
                 else
                 {

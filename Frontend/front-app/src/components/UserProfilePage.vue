@@ -208,6 +208,7 @@ export default {
       axios.put('http://localhost:8080/WebShopAppREST/rest/user/deleteUser?id=' + this.id)
         .then(response => {
           this.$router.push('/');
+          localStorage.removeItem('token');
         }).catch(error => {
           alert('Error deleting user');
         });
